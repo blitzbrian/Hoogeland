@@ -2,8 +2,8 @@
 
 /.swc/
 /.config/
-/.replit/
-/replit.nix/
+/.replit
+/replit.nix
 
 # dependencies
 /node_modules
