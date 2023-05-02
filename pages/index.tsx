@@ -17,7 +17,8 @@ const Home: NextPage = () => {
   const router = useRouter()
   const networkStatus = useNetwork();
 
-  
+  // Wake up server
+  fetch('https://hoogeland-api.dazerstudio.repl.co').catch(() => {})
   let [ dataFallback, setDataFallback ] = useState()
 
   let [ tempData, setTempData ] = useState()

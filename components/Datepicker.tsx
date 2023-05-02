@@ -19,9 +19,16 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
   let [opened, setOpen] = useState(false)
   let [date, setDate] = useState<Date | null>(null)
   let [loading, setLoading] = useState(false)
+  let [lastDate, setLastDate] = useState()
+  
+  const open = () => {
+    setOpen(true)
+    setLastDate(date)
+  }
   
   const close = async () => {
     setOpen(false)
+    if(lastDate == date) return
     setLoading(true)
     const res = await fetch('https://hoogeland-api.dazerstudio.repl.co:9000/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password'), date: date?.toDateString() }), headers: {"Content-Type": "application/json"} })
     const json = await res.json() 
@@ -34,7 +41,7 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
   }
   
   return <>
-    <ActionIcon sx={{ float: 'right' }} onClick={() => setOpen(true)}>
+    <ActionIcon sx={{ float: 'right' }} onClick={open}>
           <Image alt="Calendar" src="/calendar.svg" height={20} width={20} />
     </ActionIcon>
     <Modal 
