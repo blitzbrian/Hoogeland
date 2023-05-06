@@ -2,6 +2,10 @@ import puppeteer from "puppeteer-core"
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if(req.method === 'POST') {
+    res.status(405).json({ success: false })
+  }
+  
   const body = JSON.parse(req.body);
 
   if(body.username == null || body.password == null || body.username === '' || body.password === '') {
@@ -236,3 +240,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
   await browser.close()
 }
+
+export const config = {
+  runtime: 'edge',
+  regions: ['fra1'],
+};
