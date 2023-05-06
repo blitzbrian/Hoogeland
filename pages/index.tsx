@@ -11,19 +11,17 @@ import Days from '../components/Days'
 import Datepicker from '../components/Datepicker'
 const Popup = dynamic(() => import('../components/Popup'));
 
-const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: {"Content-Type": "application/json"} }).then(res => res.json())
+const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') })}).then(res => res.json())
 
 const Home: NextPage = () => {
   const router = useRouter()
   const networkStatus = useNetwork();
-
-  // Wake up server
-  fetch('https://hoogeland-api.dazerstudio.repl.co').catch(() => {})
+  
   let [ dataFallback, setDataFallback ] = useState()
-
+  
   let [ tempData, setTempData ] = useState()
   
-  const { data, error, isLoading } = useSWR('https://hoogeland-api.dazerstudio.repl.co:9000/get', fetcher, {
+  const { data, error, isLoading } = useSWR('/api/get', fetcher, {
   revalidateIfStale: false,
   revalidateOnFocus: false,
   revalidateOnReconnect: false,
@@ -37,7 +35,7 @@ const Home: NextPage = () => {
 
     if (localStorage.getItem('data') !== null) setDataFallback(JSON.parse(localStorage.getItem('data') || '{}'))
   }, [router])
-
+  
   if (data?.success == false) return <></>
 
   if (dataFallback == null && isLoading) return <LoadingOverlay visible overlayBlur={2} />

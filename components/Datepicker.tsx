@@ -5,21 +5,21 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic' 
 
 // These are not needed in first render, so they are imported dynamically
-// But typescript doesn't like that
+// But typescipt doesn't like that
 const DatePicker = dynamic(() => import('@mantine/dates').then(module => module.DatePicker))
 const Modal = dynamic(() => import('@mantine/core').then(module => module.Modal))
 const Group = dynamic(() => import('@mantine/core').then(module => module.Group))
 const LoadingOverlay = dynamic(() => import('@mantine/core').then(module => module.LoadingOverlay))
   
 interface Props {
-  setData: (date) => void
+  setData: (data: any) => void
 }
 
 const Datepicker: React.FC<Props> = ({ setData }) => {
   let [opened, setOpen] = useState(false)
   let [date, setDate] = useState<Date | null>(null)
   let [loading, setLoading] = useState(false)
-  let [lastDate, setLastDate] = useState()
+  let [lastDate, setLastDate] = useState<Date | null>()
   
   const open = () => {
     setOpen(true)
@@ -30,7 +30,7 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
     setOpen(false)
     if(lastDate == date) return
     setLoading(true)
-    const res = await fetch('https://hoogeland-api.dazerstudio.repl.co:9000/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password'), date: date?.toDateString() }), headers: {"Content-Type": "application/json"} })
+    const res = await fetch('/api/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password'), date: date?.toDateString() })})
     const json = await res.json() 
     if(json.error || json.success === false) {
       setLoading(false)
@@ -39,7 +39,6 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
     setData(json)
     setLoading(false)
   }
-  
   return <>
     <ActionIcon sx={{ float: 'right' }} onClick={open}>
           <Image alt="Calendar" src="/calendar.svg" height={20} width={20} />

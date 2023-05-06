@@ -24,6 +24,7 @@ const Login: NextPage = () => {
   
   useEffect(() => {
     if(localStorage.getItem('username') !== null && localStorage.getItem('password') !== null) router.push('/')
+    router.prefetch('/')
   }, [router])
   
   return (
@@ -60,16 +61,18 @@ const Login: NextPage = () => {
           />
           <Button fullWidth mt="xl" onClick={async () => {
             setLoading(true)
-            const response = await fetch('https://hoogeland-api.dazerstudio.repl.co:9000/login', { method: 'POST', body: JSON.stringify({ username, password }), headers: {"Content-Type": "application/json"}})
+            const response = await fetch('/api/get', { method: 'POST', body: JSON.stringify({ username, password })})
             setLoading(false)
 
             const data = await response.json()
-            if (data?.error != '') setError(data?.error)
-            else if (data?.success) {
-              localStorage.setItem('username', username)
-              localStorage.setItem('password', password)
-              router.push('/')
+            if (data.error) {
+              setError(data.error)
+              return
             }
+            localStorage.setItem('username', username)
+            localStorage.setItem('password', password)
+            localStorage.setItem('data', JSON.stringify(data));
+            router.push('/')
           }}>
             Log In
           </Button>
