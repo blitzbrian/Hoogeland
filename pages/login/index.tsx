@@ -21,12 +21,12 @@ const Login: NextPage = () => {
   let [error, setError] = useState('')
 
   const router = useRouter()
-  
+
   useEffect(() => {
-    if(localStorage.getItem('username') !== null && localStorage.getItem('password') !== null) router.push('/')
+    if (localStorage.getItem('username') !== null && localStorage.getItem('password') !== null) router.push('/')
     router.prefetch('/')
   }, [router])
-  
+
   return (
     <>
       <Container size={420} my={40}>
@@ -61,7 +61,7 @@ const Login: NextPage = () => {
           />
           <Button fullWidth mt="xl" onClick={async () => {
             setLoading(true)
-            const response = await fetch('/api/get', { method: 'POST', body: JSON.stringify({ username, password })})
+            const response = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})})
             setLoading(false)
 
             const data = await response.json()

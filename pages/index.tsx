@@ -11,7 +11,8 @@ import Days from '../components/Days'
 import Datepicker from '../components/Datepicker'
 const Popup = dynamic(() => import('../components/Popup'));
 
-const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') })}).then(res => res.json())
+// @ts-ignore
+const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})} ).then(res => res.json())
 
 const Home: NextPage = () => {
   const router = useRouter()
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
   
   let [ tempData, setTempData ] = useState()
   
-  const { data, error, isLoading } = useSWR('/api/get', fetcher, {
+  const { data, error, isLoading } = useSWR('https://hoogeland.cyclic.app/get', fetcher, {
   revalidateIfStale: false,
   revalidateOnFocus: false,
   revalidateOnReconnect: false,
