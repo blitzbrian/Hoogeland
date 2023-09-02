@@ -39,7 +39,7 @@ const Home: NextPage = () => {
       
       setLoading(true);
       
-      const response = await fetch('https://hoogeland-api.dazerstudio.repl.co/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})});
+      const response = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})});
 
       const data = await response.json()
 
