@@ -30,7 +30,7 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
     setOpen(false)
     if(lastDate == date) return
     setLoading(true)
-    const res = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password'), date: date?.toDateString() }), headers: new Headers({'content-type': 'application/json'})})
+    const res = await fetch('/api/days', { method: 'POST', body: JSON.stringify({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token'), date: date?.toDateString() }), headers: new Headers({'content-type': 'application/json'})})
     const json = await res.json() 
     if(json.error || json.success === false) {
       setLoading(false)

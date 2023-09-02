@@ -12,34 +12,49 @@ import Datepicker from '../components/Datepicker'
 const Popup = dynamic(() => import('../components/Popup'));
 
 // @ts-ignore
-const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})} ).then(res => res.json())
+const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token') }), headers: new Headers({'content-type': 'application/json'})} ).then(res => res.json());
 
 const Home: NextPage = () => {
   const router = useRouter()
   const networkStatus = useNetwork();
-  
-  let [ dataFallback, setDataFallback ] = useState()
-  
-  let [ tempData, setTempData ] = useState()
-  
-  const { data, error, isLoading } = useSWR('https://hoogeland.cyclic.app/get', fetcher, {
-  revalidateIfStale: false,
-  revalidateOnFocus: false,
-  revalidateOnReconnect: false,
-  onSuccess: (data) => {
-    if(data.success === false) return
-    localStorage.setItem('data', JSON.stringify(data))
-  }})
+
 
   useEffect(() => {
-    if (localStorage.getItem('username') === null || localStorage.getItem('password') === null) router.push('/login')
+    if (localStorage.getItem('token') === null || localStorage.getItem('userId') === null) router.push('/login')
 
     if (localStorage.getItem('data') !== null) setDataFallback(JSON.parse(localStorage.getItem('data') || '{}'))
   }, [router])
   
-  if (data?.success == false) return <></>
+  let [ dataFallback, setDataFallback ] = useState()
+  
+  let [ tempData, setTempData ] = useState()
 
-  if (dataFallback == null && isLoading) return <LoadingOverlay visible overlayBlur={2} />
+  let [ loading, setLoading ] = useState(false);
+  
+  let { data, error, isLoading } = useSWR('/api/days', fetcher, {
+  onSuccess: async (data) => {
+    if(data.success === false) {
+
+      setTempData(JSON.parse(localStorage.getItem('data') || '{}'));
+      
+      setLoading(true);
+      
+      const response = await fetch('https://hoogeland-api.dazerstudio.repl.co/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})});
+
+      const data = await response.json()
+
+      localStorage.setItem('userId', data.userId);
+      localStorage.setItem('token', data.token);
+            
+      return
+    }
+    setLoading(false);
+    localStorage.setItem('data', JSON.stringify(data))
+  }})
+  
+  if ((dataFallback == null && isLoading)) return <LoadingOverlay visible overlayBlur={2} />
+
+  if (data?.success == false && !loading) return <></>
   
   return (
     <>

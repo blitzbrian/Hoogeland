@@ -61,17 +61,24 @@ const Login: NextPage = () => {
           />
           <Button fullWidth mt="xl" onClick={async () => {
             setLoading(true)
-            const response = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})})
-            setLoading(false)
+            // const response = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})});
 
-            const data = await response.json()
+            const response = await fetch('https://hoogeland-api.dazerstudio.repl.co/get', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})});
+
+            const data = await response.json();
+      
             if (data.error) {
-              setError(data.error)
-              return
+              setError(data.error);
+              return;
             }
-            localStorage.setItem('username', username)
-            localStorage.setItem('password', password)
-            localStorage.setItem('data', JSON.stringify(data));
+      
+            localStorage.setItem('username', username);
+            localStorage.setItem('password', password);
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+      
+            setLoading(false);
+      
             router.push('/')
           }}>
             Log In

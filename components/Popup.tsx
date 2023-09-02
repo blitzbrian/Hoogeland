@@ -2,25 +2,10 @@ import Title from './Title';
 import { Modal, Divider } from '@mantine/core';
 import { useState } from 'react';
 
-interface Subject {
-  start: number;
-  end: number;
-  hour: string;
-  title: string;
-  location: string;
-  description: string;
-  teacher: string;
-  test: boolean;
-  homework: string;
-  break: boolean;
-  bigBreak: boolean;
-  breakStart: number;
-  breakEnd: number;
-}
 // @ts-ignore
-let opened: boolean, setOpen: (open) => void, subject, setSubject: (subject) => void, Break: boolean, setBreak: (Break) => void;
+let opened: boolean, setOpen: (open) => void, subject, setSubject: (subject) => void, Break: any, setBreak: (Break) => void;
 
-const open = (subject: Subject, Break: boolean) => {
+const open = (subject: any, Break: boolean) => {
   setBreak(Break);
   setSubject(subject);
   setOpen(true);
@@ -28,8 +13,8 @@ const open = (subject: Subject, Break: boolean) => {
 
 const Popup = () => {
   [opened, setOpen] = useState(false);
-  [subject, setSubject] = useState<Subject>();
-  [Break, setBreak] = useState(false);
+  [subject, setSubject] = useState();
+  [Break, setBreak] = useState();
 
   
   return (
@@ -56,13 +41,13 @@ const Popup = () => {
         <tbody>
           {Break === false && (
             <>
-              {subject?.start && (
+              {subject?.Start && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Begin</th>
                     <td>
-                      {new Date(subject?.start).toLocaleTimeString('nl-NL', {
+                      {new Date(subject?.Start).toLocaleTimeString('nl-NL', {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
@@ -70,13 +55,13 @@ const Popup = () => {
                   </tr>
                 </>
               )}
-              {subject?.end && (
+              {subject?.Einde && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Eind</th>
                     <td>
-                      {new Date(subject?.end).toLocaleTimeString('nl-NL', {
+                      {new Date(subject?.Einde).toLocaleTimeString('nl-NL', {
                         hour: '2-digit',
                         minute: '2-digit',
                       })}
@@ -84,30 +69,30 @@ const Popup = () => {
                   </tr>
                 </>
               )}
-              {subject?.location && (
+              {subject?.Lokatie && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Locatie</th>
-                    <td>{subject?.location}</td>
+                    <td>{subject?.Lokatie}</td>
                   </tr>
                 </>
               )}
-              {subject?.description && (
+              {subject?.Vakken && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Vak</th>
-                    <td>{subject?.description}</td>
+                    <td>{subject?.Vakken[0].Naam}</td>
                   </tr>
                 </>
               )}
-              {subject?.teacher && (
+              {subject?.Docent && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Docent</th>
-                    <td>{subject?.teacher}</td>
+                    <td>{subject?.Docent}</td>
                   </tr>
                 </>
               )}
@@ -139,7 +124,7 @@ const Popup = () => {
           )}
         </tbody>
       </table>
-      {subject?.homework && Break === false && (
+      {subject?.Inhoud && Break === false && (
         <>
           <Divider variant="dotted" sx={{ width: '100%' }} />
           <strong
@@ -154,7 +139,7 @@ const Popup = () => {
               marginTop: 0,
               marginLeft: '2.5px',
             }}
-            dangerouslySetInnerHTML={{ __html: `${subject?.homework}` }}
+            dangerouslySetInnerHTML={{ __html: `${subject?.Inhoud}` }}
           ></p>
         </>
       )}

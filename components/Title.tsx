@@ -1,31 +1,15 @@
 import { Badge } from '@mantine/core';
 
 interface Props {
-  subject: Subject | undefined;
+  subject: any;
   Break: boolean;
-}
-
-interface Subject {
-  start: number;
-  end: number;
-  hour: string;
-  title: string;
-  location: string;
-  description: string;
-  teacher: string;
-  test: boolean;
-  homework: string;
-  break: boolean;
-  bigBreak: boolean;
-  breakStart: number;
-  breakEnd: number;
 }
 
 const Title: React.FC<Props> = ({ subject, Break }) => {
   if (Break === false)
     return (
       <>
-        {subject?.hour && (
+        {subject?.LesuurVan && (
           <Badge
             sx={{ marginRight: '5px', cursor: 'pointer' }}
             color="teal"
@@ -33,10 +17,10 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
             size="sm"
             variant="filled"
           >
-            {subject?.hour}
+            {subject?.LesuurVan}
           </Badge>
         )}
-        {subject?.title}
+        {subject?.Omschrijving}
         {subject?.test && (
           <Badge
             sx={{ marginLeft: '5px', cursor: 'pointer' }}
@@ -46,11 +30,12 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
             Toets
           </Badge>
         )}
-        {subject?.homework && !subject?.test && (
+        {subject?.Inhoud && !subject?.test && (
           <Badge
             sx={{ marginLeft: '5px', cursor: 'pointer' }}
             radius="md"
             variant="filled"
+            color={subject.Afgerond ? "teal" : undefined}
           >
             Huiswerk
           </Badge>

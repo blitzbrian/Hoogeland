@@ -4,30 +4,10 @@ import { Accordion } from '@mantine/core';
 import Subject from './Subject';
 
 interface Props {
-  days: Day[]
-}
-
-interface Day {
-  day: number
-  subjects: ISubject[]
+  days: any
 }
 
 // The name Subject is already in use
-interface ISubject {
-  start: number;
-  end: number;
-  hour: string;
-  title: string;
-  location: string;
-  description: string;
-  teacher: string;
-  test: boolean;
-  homework: string;
-  break: boolean;
-  bigBreak: boolean;
-  breakStart: number;
-  breakEnd: number;
-}
 
 const generateLabel = (time: number) => {
   const day = new Date(time).toLocaleString('nl-NL', {
@@ -59,13 +39,13 @@ const Days: React.FC<Props> = (props) => {
         },
       }}
     >
-      {props.days?.map((day) => (
+      {props.days?.map((day: any) => (
         <Accordion.Item key={uuidv4()} value={day.day.toString()}>
           <Accordion.Control>
             {generateLabel(day.day)}
           </Accordion.Control>
           <Accordion.Panel>
-            {day.subjects.map((subject) => (
+            {day.subjects.map((subject: any) => (
               <Subject key={uuidv4()} subject={subject} />
             ))}
           </Accordion.Panel>
