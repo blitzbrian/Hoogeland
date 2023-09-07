@@ -88,7 +88,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
 	};
 
   
-	let url = new URL(res.headers.get('location'));
+	let url = new URL('https://accounts.magister.net' + res.headers.get('location'));
 	let params = url.searchParams;
 
 	const returnUrl = params.get('returnUrl');
