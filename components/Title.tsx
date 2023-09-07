@@ -21,7 +21,7 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
           </Badge>
         )}
         {subject?.Omschrijving}
-        {subject?.toets && (
+        {/* {subject?.toets && (
           <Badge
             sx={{ marginLeft: '5px', cursor: 'pointer' }}
             radius="md"
@@ -29,8 +29,8 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
           >
             Toets
           </Badge>
-        )}
-        {subject?.Inhoud && subject?.toets && (
+        )} */}
+        {subject?.Inhoud && (
           <Badge
             sx={{ marginLeft: '5px', cursor: 'pointer' }}
             radius="md"
