@@ -9,7 +9,6 @@ import dynamic from 'next/dynamic'
 const DatePicker = dynamic(() => import('@mantine/dates').then(module => module.DatePicker))
 const Modal = dynamic(() => import('@mantine/core').then(module => module.Modal))
 const Group = dynamic(() => import('@mantine/core').then(module => module.Group))
-const LoadingOverlay = dynamic(() => import('@mantine/core').then(module => module.LoadingOverlay))
   
 interface Props {
   setData: (data: any) => void
@@ -18,7 +17,6 @@ interface Props {
 const Datepicker: React.FC<Props> = ({ setData }) => {
   let [opened, setOpen] = useState(false)
   let [date, setDate] = useState<Date | null>(null)
-  let [loading, setLoading] = useState(false)
   let [lastDate, setLastDate] = useState<Date | null>()
   
   const open = () => {
@@ -29,15 +27,12 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
   const close = async () => {
     setOpen(false)
     if(lastDate == date) return
-    setLoading(true)
     const res = await fetch('/api/days', { method: 'POST', body: JSON.stringify({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token'), date: date?.toDateString() }), headers: new Headers({'content-type': 'application/json'})})
     const json = await res.json() 
     if(json.error || json.success === false) {
-      setLoading(false)
       return
     }
     setData(json)
-    setLoading(false)
   }
   return <>
     <ActionIcon sx={{ float: 'right' }} onClick={open}>
@@ -53,7 +48,6 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
           <DatePicker value={date} onChange={setDate} />
       </Group>
     </Modal>
-    {loading && <LoadingOverlay visible overlayBlur={2} />}
   </>
 }
 

@@ -40,6 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let data = await response.json();
 
+  
   if(data === "Invalid Operation" || data === "SecurityToken Expired") {  
     res.status(401).json({ success: false, error: data }); 
     return;
@@ -142,18 +143,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (hour === 4 && !smallBreak1 && !minirooster) {
         // Small Break
         smallBreak1 = true
-        subjects[i - 1].Einde -= 900000
+        if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 900000
         smallBreak()
       }
       else if (hour === 6 && !bigBreak) {
         // Big Break
-        subjects[i - 1].Einde -= 1800000
+        if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 1800000
         bigBreakFn()
       }
       else if (hour === 8 && !smallBreak2 && !minirooster) {
         // Small Break
         smallBreak2 = true
-        subjects[i - 1].Einde -= 900000
+        if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 900000
         smallBreak()
       }
 

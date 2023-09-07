@@ -3,7 +3,6 @@ import {
   PasswordInput,
   Paper,
   Title,
-  Text,
   Container,
   Button,
   LoadingOverlay
@@ -60,14 +59,16 @@ const Login: NextPage = () => {
             error={error}
           />
           <Button fullWidth mt="xl" onClick={async () => {
-            setLoading(true)
-
-            const response = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})});
+            setLoading(true);
+            setError('');
+      
+            const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})});
 
             const data = await response.json();
       
             if (data.error) {
               setError(data.error);
+              setLoading(false);
               return;
             }
       
@@ -84,13 +85,6 @@ const Login: NextPage = () => {
           </Button>
         </Paper>
       </Container>
-      <Text sx={{
-        textAlign: 'center',
-      }}>
-        Uw inloggegevens worden alleen op uw computer opgeslagen,
-        <br />
-        En worden alleen gedeeld met Magister.
-      </Text>
       <LoadingOverlay visible={loading} overlayBlur={2} />
     </>
   );

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic"
 import Image from "next/image"
-import { LoadingOverlay, Header } from '@mantine/core'
+import { Header } from '@mantine/core'
 import { useNetwork } from '@mantine/hooks'
 import useSWR from 'swr'
 import Days from '../components/Days'
@@ -29,17 +29,15 @@ const Home: NextPage = () => {
   
   let [ tempData, setTempData ] = useState()
 
-  let [ loading, setLoading ] = useState(false);
   
   let { data, error, isLoading } = useSWR('/api/days', fetcher, {
   onSuccess: async (data) => {
-    if(data.success === false) {
+    if(data.success === false && localStorage.getItem('userId')) {
+      // @ts-ignore
+      if(localStorage.getItem('data')) setTempData(JSON.parse(localStorage.getItem('data')));
 
-      setTempData(JSON.parse(localStorage.getItem('data') || '{}'));
       
-      setLoading(true);
-      
-      const response = await fetch('https://hoogeland.cyclic.app/get', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})});
+      const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})});
 
       const data = await response.json()
 
@@ -48,13 +46,8 @@ const Home: NextPage = () => {
             
       return
     }
-    setLoading(false);
     localStorage.setItem('data', JSON.stringify(data))
   }})
-  
-  if ((dataFallback == null && isLoading)) return <LoadingOverlay visible overlayBlur={2} />
-
-  if (data?.success == false && !loading) return <></>
   
   return (
     <>
@@ -65,7 +58,9 @@ const Home: NextPage = () => {
         <Image alt="" src={"/logo.svg"} height={40} width={80} />
         <Datepicker setData={setTempData}/>
       </Header>
-      <Days days={isLoading || networkStatus.online === false ? dataFallback : (tempData ? tempData : data)} />
+      {((data && data.success !== false) || tempData) &&
+        <Days days={networkStatus.online === false ? dataFallback : (tempData ? tempData :  data)} />
+      }
       <Popup />
     </>
   )
