@@ -66,18 +66,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       else return (new Date(entry.day).toDateString() === new Date(item.Start).toDateString());
     });
 
-    item.Omschrijving = item.Omschrijving.split('-').splice(0, 2).join('-') +(item.Lokatie ? ('- ' + item.Lokatie) : '');
-
     item.Start = new Date(item.Start).getTime();
     item.Einde = new Date(item.Einde).getTime();
-
-    item.Docent = item.Docenten.map((docent: any, i: number) => {
-      if(i === 0) {
-        return docent.Naam
-      } else {
-        return ', ' + docent.Naam
-      }
-    });
     
     day.subjects.push(item);
   });
@@ -119,7 +109,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         location == 8 ||
         subject.Vakken[0].Naam == 'Lichamelijke opvoeding' ||
         (location >= 104 && location <= 127) ||
-        (location >= 228 && location <= 258)) {
+        (location >= 228 && location <= 258) ||
+        (location >= 71 && location <= 82)
+      ) {
         // Break flow 1  
         if (hour === 3 && !minirooster) {
           // Small Break

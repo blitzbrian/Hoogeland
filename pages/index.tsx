@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic"
 import Image from "next/image"
-import { Header } from '@mantine/core'
+import { Header, LoadingOverlay } from '@mantine/core'
 import { useNetwork } from '@mantine/hooks'
 import useSWR from 'swr'
 import Days from '../components/Days'
@@ -62,6 +62,7 @@ const Home: NextPage = () => {
         <Days days={networkStatus.online === false ? dataFallback : (tempData ? tempData :  data)} />
       }
       <Popup />
+      <LoadingOverlay visible={!((data && data.success !== false) || tempData)} overlayBlur={2} />
     </>
   )
 }

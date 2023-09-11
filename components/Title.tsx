@@ -20,7 +20,7 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
             {subject?.LesuurVan}
           </Badge>
         )}
-        {subject?.Omschrijving}
+        {subject ? subject.Omschrijving.split('-').splice(0, 2).join('-') + (subject.Lokatie ? ('- ' + subject.Lokatie) : '') : ''}
         {/* {subject?.toets && (
           <Badge
             sx={{ marginLeft: '5px', cursor: 'pointer' }}

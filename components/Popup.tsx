@@ -1,34 +1,35 @@
 import Title from './Title';
-import { Modal, Divider } from '@mantine/core';
+import { Modal, Divider, Switch } from '@mantine/core';
 import { useState } from 'react';
 
 // @ts-ignore
-let opened: boolean, setOpen: (open) => void, subject, setSubject: (subject) => void, Break: any, setBreak: (Break) => void;
+let opened: boolean, setOpen: (open) => void, subject, setSubject: (subject) => void, Break: any, setBreak: (Break) => void, checked, setChecked: (checked) => void;
 
 const open = (subject: any, Break: boolean) => {
   setBreak(Break);
   setSubject(subject);
   setOpen(true);
+  setChecked(subject.Afgerond);
 };
 
 const Popup = () => {
   [opened, setOpen] = useState(false);
   [subject, setSubject] = useState();
   [Break, setBreak] = useState();
+  [checked, setChecked] = useState(false);
 
-  
   return (
     <Modal
       opened={opened}
       onClose={() => setOpen(false)}
       withCloseButton={false}
-      title={<Title subject={subject} Break={Break}/>}
+      title={<Title subject={subject} Break={Break} />}
       styles={{
         title: {
           cursor: 'default',
         },
       }}
-      transitionProps = {{ transition: "slide-down", duration: 300 }}
+      transitionProps={{ transition: "slide-down", duration: 300 }}
     >
       <table
         style={{
@@ -87,12 +88,18 @@ const Popup = () => {
                   </tr>
                 </>
               )}
-              {subject?.Docent && (
+              {subject?.Docenten && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Docent</th>
-                    <td>{subject?.Docent}</td>
+                    <td>{subject?.Docenten?.map((docent: any, i: number) => {
+                      if (i === 0) {
+                        return docent.Naam
+                      } else {
+                        return ', ' + docent.Naam
+                      }
+                    })}</td>
                   </tr>
                 </>
               )}
@@ -127,13 +134,21 @@ const Popup = () => {
       {subject?.Inhoud && Break === false && (
         <>
           <Divider variant="dotted" sx={{ width: '100%' }} />
-          <strong
-            style={{
-              marginLeft: '2.5px',
-            }}
-          >
-            Huiswerk{' '}
-          </strong>
+          <div style={{
+            display: 'flex',
+            // justifyContent: 'center',
+            // alignItems: 'center'
+          }}>
+            <strong
+              style={{
+                marginLeft: '2.5px',
+                display: 'inline-block'
+              }}
+            >
+              Huiswerk{' '}
+            </strong>
+             {/* <Switch sx={{ display: 'inline-block', marginLeft: 'auto'}} checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}/> */}
+          </div>
           <p
             style={{
               marginTop: 0,

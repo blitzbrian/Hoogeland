@@ -38,9 +38,10 @@ const Days: React.FC<Props> = (props) => {
           lineHeight: 'normal !important',
         },
       }}
+      defaultValue={new Date().toDateString()}
     >
       {props.days?.map((day: any) => (
-        <Accordion.Item key={uuidv4()} value={day.day.toString()}>
+        <Accordion.Item key={uuidv4()} value={new Date(day.day).toDateString()}>
           <Accordion.Control>
             {generateLabel(day.day)}
           </Accordion.Control>
