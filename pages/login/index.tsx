@@ -22,7 +22,10 @@ const Login: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (localStorage.getItem('username') !== null && localStorage.getItem('password') !== null) router.push('/')
+    (async () => {
+      // @ts-ignore
+      if (await cookieStore.get('userId') !== null && await cookieStore.get('token') !== null) router.push('/')
+    })();
     router.prefetch('/')
   }, [router])
 
@@ -61,8 +64,18 @@ const Login: NextPage = () => {
           <Button fullWidth mt="xl" onClick={async () => {
             setLoading(true);
             setError('');
+            // @ts-ignore
+            cookieStore.set('username', username);
+            // @ts-ignore
+            cookieStore.set('password', password);
       
-            const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ username, password }), headers: new Headers({'content-type': 'application/json'})});
+            const response = await fetch('/api/login', { 
+              method: 'GET', 
+              headers: {
+                'content-type': 'application/json'
+              },
+              credentials: 'include'
+            });
 
             const data = await response.json();
       
@@ -71,11 +84,11 @@ const Login: NextPage = () => {
               setLoading(false);
               return;
             }
-      
-            localStorage.setItem('username', username);
-            localStorage.setItem('password', password);
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('userId', data.userId);
+
+            // @ts-ignore
+            cookieStore.set('token', data.token);
+            // @ts-ignore
+            cookieStore.set('userId', data.userId);
       
             setLoading(false);
       

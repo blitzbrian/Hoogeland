@@ -1,53 +1,60 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic"
 import Image from "next/image"
-import { Header, LoadingOverlay } from '@mantine/core'
-import { useNetwork } from '@mantine/hooks'
-import useSWR from 'swr'
+import { Header } from '@mantine/core'
 import Days from '../components/Days'
 import Datepicker from '../components/Datepicker'
+
 const Popup = dynamic(() => import('../components/Popup'));
 
-// @ts-ignore
-const fetcher = (url: string) => fetch(url, { method: 'POST', body: JSON.stringify({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token') }), headers: new Headers({'content-type': 'application/json'})} ).then(res => res.json());
+interface Props {
+  data: any
+}
 
-const Home: NextPage = () => {
-  const router = useRouter()
-  const networkStatus = useNetwork();
-
-
-  useEffect(() => {
-    if (localStorage.getItem('token') === null || localStorage.getItem('userId') === null) router.push('/login')
-
-    if (localStorage.getItem('data') !== null) setDataFallback(JSON.parse(localStorage.getItem('data') || '{}'))
-  }, [router])
-  
-  let [ dataFallback, setDataFallback ] = useState()
+const Home: NextPage<Props> = ({ data }) => {
+  const router = useRouter()  
   
   let [ tempData, setTempData ] = useState()
 
+  let [ days, setDays ] = useState(data);
+
   
-  let { data, error, isLoading } = useSWR('/api/days', fetcher, {
-  onSuccess: async (data) => {
-    if(data.success === false && localStorage.getItem('userId')) {
-      // @ts-ignore
-      if(localStorage.getItem('data')) setTempData(JSON.parse(localStorage.getItem('data')));
+  useEffect(() => {
+    (async () => {
+      if(data.success === false) {
 
-      
-      const response = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ username: localStorage.getItem('username'), password: localStorage.getItem('password') }), headers: new Headers({'content-type': 'application/json'})});
+        let response = await fetch('/api/login', { 
+          method: 'GET', 
+          headers: {
+            'content-type': 'application/json'
+          },
+          credentials: 'include'
+        });
+  
+        let data = await response.json()
+  
+        if(!data.success) return
 
-      const data = await response.json()
+        // @ts-ignore
+        cookieStore.set('userId', data.userId);
+        // @ts-ignore
+        cookieStore.set('token', data.token);
 
-      localStorage.setItem('userId', data.userId);
-      localStorage.setItem('token', data.token);
-            
-      return
-    }
-    localStorage.setItem('data', JSON.stringify(data))
-  }})
+        response = await fetch('/api/days', {
+          method: 'GET',
+          headers: {
+            'content-type': 'application/json'
+          },
+          credentials: 'include'
+        });
+
+        setDays(await response.json());
+        
+    }})();
+  }, [data]);
   
   return (
     <>
@@ -58,13 +65,34 @@ const Home: NextPage = () => {
         <Image alt="" src={"/logo.svg"} height={40} width={80} />
         <Datepicker setData={setTempData}/>
       </Header>
-      {((data && data.success !== false) || tempData) &&
-        <Days days={networkStatus.online === false ? dataFallback : (tempData ? tempData :  data)} />
+      {((days && days.success !== false) || tempData) &&
+        <Days days={(tempData ||  days)} />
       }
       <Popup />
-      <LoadingOverlay visible={!((data && data.success !== false) || tempData)} overlayBlur={2} />
     </>
   )
+}
+
+// @ts-ignore
+export async function getServerSideProps({ req, res }) {
+  if(!req.cookies.userId || !req.cookies.token) return {
+    redirect: {
+      destination: '/login',
+      permanent: false
+    }
+  }
+  
+  const response = await fetch('https://hoogeland.eu.org/api/days', {
+    method: 'GET',     
+    headers: { 
+      'content-type': 'application/json',
+      'cookie': req.headers.cookie
+    },
+  });
+  
+  const data = await response.json()
+
+  return { props: { data } }
 }
 
 export default Home

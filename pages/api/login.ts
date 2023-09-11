@@ -24,10 +24,29 @@ const cookiesToHeader = (cookies) => {
 	return header;
 };
 
+const generateState = () => {
+  let state = "";
+  const possible = "abcdefhijklmnopqrstuvwxyz";
+  for (var i = 0; i < 16; i++) {
+    state += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return state;
+}
+
+const generateNonce = () => {
+  let state = "";
+  const possible = "abcdef0123456789";
+  for (var i = 0; i < 32; i++) {
+    state += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return state;
+}
+
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
 	let cookies = {};
 
-  if(!request.body.username || !request.body.password) {
+  
+  if(!request.cookies.username || !request.cookies.password) {
     response.status(400).json({ error: 'Incorrecte inloggegevens', success: false })
     return;
   }
@@ -35,7 +54,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   // Begin Auth
   
 	let res = await fetch(
-		'https://accounts.magister.net/connect/authorize?client_id=M6-isw.magister.net&redirect_uri=https%3A%2F%2Fisw.magister.net%2Foidc%2Fredirect_callback.html&response_type=id_token%20token&scope=openid%20profile%20opp.read%20opp.manage%20attendance.overview%20calendar.ical.user%20calendar.to-do.user&state=731377482225414aa394ddba5e05db5d&nonce=91c79dc62bb245cba2f33a0d77bc03f7&acr_values=tenant%3Aisw.magister.net',
+		`https://accounts.magister.net/connect/authorize?client_id=M6-isw.magister.net&redirect_uri=https%3A%2F%2Fisw.magister.net%2Foidc%2Fredirect_callback.html&response_type=id_token%20token&scope=openid%20profile%20opp.read%20opp.manage%20attendance.overview%20calendar.ical.user%20calendar.to-do.user&state=${generateState()}&nonce=${generateNonce()}&acr_values=tenant%3Aisw.magister.net`,
 		{
 			headers: {
 				accept:
@@ -191,7 +210,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     "referrer": "https://accounts.magister.net/",
     "referrerPolicy": "origin",
     "body": JSON.stringify({
-      username: request.body.username,
+      username: request.cookies.username,
       returnUrl,
       sessionId,
       authCode
@@ -231,7 +250,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     "referrer": "https://accounts.magister.net/",
     "referrerPolicy": "origin",
     "body": JSON.stringify({
-      password: request.body.password,
+      password: request.cookies.password,
       returnUrl,
       sessionId,
       authCode,
@@ -309,6 +328,6 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   const userId = data.Persoon.Id;
   
-  response.status(200).json({ token, userId });
+  response.status(200).json({ token, userId, success: true });
 } 
 

@@ -27,7 +27,15 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
   const close = async () => {
     setOpen(false)
     if(lastDate == date) return
-    const res = await fetch('/api/days', { method: 'POST', body: JSON.stringify({ userId: localStorage.getItem('userId'), token: localStorage.getItem('token'), date: date?.toDateString() }), headers: new Headers({'content-type': 'application/json'})})
+    const res = await fetch('/api/days', { 
+      method: 'POST', 
+      body: JSON.stringify({ 
+        date: date?.toDateString()
+      }), 
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
     const json = await res.json() 
     if(json.error || json.success === false) {
       return

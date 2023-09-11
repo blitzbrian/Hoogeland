@@ -12,6 +12,24 @@ const open = (subject: any, Break: boolean) => {
   setChecked(subject.Afgerond);
 };
 
+const onCheck = async (e: any) => {
+  setChecked(e?.currentTarget?.checked);
+  
+  await fetch('/api/homework', {
+    body: JSON.stringify({
+      // @ts-ignore
+      ...subject,
+      // @ts-ignore
+      Afgerond: !checked
+    }),
+    method: 'PUT',
+    credentials: 'include',
+    headers: {
+      'content-type': 'application/json'
+    }
+  });  
+}
+
 const Popup = () => {
   [opened, setOpen] = useState(false);
   [subject, setSubject] = useState();
@@ -136,8 +154,8 @@ const Popup = () => {
           <Divider variant="dotted" sx={{ width: '100%' }} />
           <div style={{
             display: 'flex',
-            // justifyContent: 'center',
-            // alignItems: 'center'
+            justifyContent: 'center',
+            alignItems: 'center'
           }}>
             <strong
               style={{
@@ -147,7 +165,7 @@ const Popup = () => {
             >
               Huiswerk{' '}
             </strong>
-             {/* <Switch sx={{ display: 'inline-block', marginLeft: 'auto'}} checked={checked} onChange={(event) => setChecked(event.currentTarget.checked)}/> */}
+             <Switch sx={{ display: 'inline-block', marginLeft: 'auto'}} checked={checked} onChange={onCheck}/>
           </div>
           <p
             style={{

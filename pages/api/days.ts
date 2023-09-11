@@ -8,14 +8,14 @@ function dateToFormat(date: Date) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const body = req.body;
-
+  const body = req.cookies;
+  
   if(!body.userId || !body.token) {
     res.status(400).json({ success: false, error: 'Missing user id or auth token' });
     return;
   }
 
-  const from = body.date ? new Date(body.date) : new Date();
+  const from = req.body.date ? new Date(req.body.date) : new Date();
 
   const to = new Date(from.getTime() + /* A Week */ 604800000);
   
