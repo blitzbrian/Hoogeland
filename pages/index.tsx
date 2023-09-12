@@ -39,9 +39,17 @@ const Home: NextPage<Props> = ({ data }) => {
         if(!data.success) return
 
         // @ts-ignore
-        cookieStore.set('userId', data.userId);
+        cookieStore.set({
+          name: 'token',
+          value: data.token,
+          expires: new Date().getTime() + 31536000
+        });
         // @ts-ignore
-        cookieStore.set('token', data.token);
+        cookieStore.set({
+          name: 'userId',
+          value: data.userId,
+          expires: new Date().getTime() + 31536000
+        });
 
         response = await fetch('/api/days', {
           method: 'GET',

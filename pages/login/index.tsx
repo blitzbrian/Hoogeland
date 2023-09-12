@@ -65,9 +65,17 @@ const Login: NextPage = () => {
             setLoading(true);
             setError('');
             // @ts-ignore
-            cookieStore.set('username', username);
+            cookieStore.set({
+              name: 'username',
+              value: username,
+              expires: new Date().getTime() + 31536000
+            });
             // @ts-ignore
-            cookieStore.set('password', password);
+            cookieStore.set({
+              name: 'password',
+              value: password,
+              expires: new Date().getTime() + 31536000
+            });
       
             const response = await fetch('/api/login', { 
               method: 'GET', 
@@ -86,9 +94,17 @@ const Login: NextPage = () => {
             }
 
             // @ts-ignore
-            cookieStore.set('token', data.token);
+            cookieStore.set({
+              name: 'token',
+              value: data.token,
+              expires: new Date().getTime() + 31536000
+            });
             // @ts-ignore
-            cookieStore.set('userId', data.userId);
+            cookieStore.set({
+              name: 'userId',
+              value: data.userId,
+              expires: new Date().getTime() + 31536000
+            });
       
             setLoading(false);
       
