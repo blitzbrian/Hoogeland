@@ -72,13 +72,13 @@ const Home: NextPage<Props> = ({ data }) => {
         <title>Hoogeland: Home</title>
       </Head>
       <Header height={60} p="xs">
-        <Image alt="" src={"/logo.svg"} height={40} width={80} />
+        <Image alt="logo" src={"/logo.svg"} height={40} width={80} />
         <Datepicker setData={setDays}/>
       </Header>
       {(days && days.success !== false) &&
         <Days days={days} />
       }
-      <Popup />
+      <Popup setDays={setDays} />
     </>
   )
 }
@@ -92,7 +92,7 @@ export async function getServerSideProps({ req, res }) {
     }
   }
   
-  const response = await fetch('https://hoogeland.eu.org/api/days', {
+  const response = await fetch('https://hoogeland.dazerstudio.repl.co/api/days', {
     method: 'GET',     
     headers: { 
       'content-type': 'application/json',

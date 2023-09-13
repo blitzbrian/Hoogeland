@@ -107,7 +107,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
 	};
 
   
-	let url = new URL('https://accounts.magister.net' + res.headers.get('location'));
+	let url = new URL(/*'https://accounts.magister.net' + */res.headers.get('location'));
 	let params = url.searchParams;
 
 	const returnUrl = params.get('returnUrl');
@@ -118,7 +118,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
 	const authCode = 'd085f1';
 
 
-	res = await fetch('https://accounts.magister.net' + res.headers.get('location'), {
+	res = await fetch(/*'https://accounts.magister.net' + */res.headers.get('location'), {
 		headers: {
 			accept:
 				'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',

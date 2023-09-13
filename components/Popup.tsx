@@ -12,36 +12,54 @@ const open = (subject: any, Break: boolean) => {
   setChecked(subject.Afgerond);
 };
 
-const onCheck = async (e: any) => {
-  setChecked(e?.currentTarget?.checked);
-  
-  await fetch('/api/homework', {
-    body: JSON.stringify({
-      // @ts-ignore
-      ...subject,
-      // @ts-ignore
-      Afgerond: !checked
-    }),
-    method: 'PUT',
-    credentials: 'include',
-    headers: {
-      'content-type': 'application/json'
-    }
-  });  
+
+interface Props {
+  setDays: (days: any) => void
 }
 
-const Popup = () => {
+const Popup: React.FC<Props> = ({ setDays }) => {
   [opened, setOpen] = useState(false);
   [subject, setSubject] = useState();
   [Break, setBreak] = useState();
   [checked, setChecked] = useState(false);
 
+  const onCheck = async (e: any) => {
+    setChecked(e?.currentTarget?.checked);
+    
+    await fetch('/api/homework', {
+      body: JSON.stringify({
+        // @ts-ignore
+        ...subject,
+        // @ts-ignore
+        Afgerond: !checked
+      }),
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json'
+      },
+      credentials: 'include'
+    });  
+
+    const res = await fetch('/api/days', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json'
+      },
+      credentials: 'include'
+    });
+
+    const data = await res.json()
+    
+    if(data.success !== false) setDays(data);
+    
+  }
+  
   return (
     <Modal
       opened={opened}
       onClose={() => setOpen(false)}
       withCloseButton={false}
-      title={<Title subject={subject} Break={Break} />}
+      title={<Title subject={subject} Break={Break} done={checked} />}
       styles={{
         title: {
           cursor: 'default',

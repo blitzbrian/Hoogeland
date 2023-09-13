@@ -3,9 +3,10 @@ import { Badge } from '@mantine/core';
 interface Props {
   subject: any;
   Break: boolean;
+  done: boolean;
 }
 
-const Title: React.FC<Props> = ({ subject, Break }) => {
+const Title: React.FC<Props> = ({ subject, Break, done }) => {
   if (Break === false)
     return (
       <>
@@ -27,7 +28,7 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
             sx={{ marginLeft: '5px', cursor: 'pointer' }}
             radius="md"
             variant="filled"
-            color={subject.Afgerond ? "teal" : undefined}
+            color={done ? "teal" : undefined}
           >
             {subject.type}
           </Badge>
@@ -37,7 +38,7 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
   else
     return (
       <>
-        {subject?.break && <>Pauze</>}
+        {subject?.break && <>Kleine pauze</>}
         {subject?.bigBreak && <>Grote pauze</>}
       </>
     );

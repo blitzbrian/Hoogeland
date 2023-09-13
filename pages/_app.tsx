@@ -19,16 +19,16 @@ export default function App(props: AppProps) {
         <meta name="description" content="Pauzes en meer voor Hoogeland" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#1a1b1e" />
         <meta httpEquiv='content-language' content='nl' />
         
-        <link rel="apple-touch-icon" href="/ios/512.png" />
-        <link rel="apple-touch-icon" sizes="152x152" href="/ios/152.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/ios/180.png" />
-        <link rel="apple-touch-icon" sizes="167x167" href="/ios/167.png" />
+        <link rel="apple-touch-icon" href="/assets/icons/icon-512x512.png" />
+        <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/assets/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" sizes="384x384" href="/assets/icons/icon-384x384.png" />
         
-        <link rel="icon" type="image/png" sizes="32x32" href="/windows11/Square44x44Logo.targetsize-32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/windows11/Square44x44Logo.targetsize-16.png" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/assets/icons/icon-48x48.png" />
+        <link rel="icon" type="image/png" sizes="72x72" href="/assets/icons/icon-72x72.png" />
         <link rel="manifest" href="/manifest.json" />
         <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -36,14 +36,14 @@ export default function App(props: AppProps) {
         <meta name="twitter:url" content="https://hoogeland.eu.org" />
         <meta name="twitter:title" content="Hoogeland" />
         <meta name="twitter:description" content="Pauzes en meer voor Hoogeland" />
-        <meta name="twitter:image" content="https://hoogeland.eu.org/android/android-launchericon-192-192.png" />
+        <meta name="twitter:image" content="https://hoogeland.eu.org/assets/icons/icon-512x512.png" />
         <meta name="twitter:creator" content="@Dazerstudio" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Hoogeland" />
         <meta property="og:description" content="Pauzes en meer voor Hoogeland" />
         <meta property="og:site_name" content="Hoogeland" />
         <meta property="og:url" content="https://hoogeland.eu.org" />
-        <meta property="og:image" content="https://hoogeland.dazerstudio.repl.co/windows11/Square150x150Logo.scale-400.png" />
+        <meta property="og:image" content="https://hoogeland.dazerstudio.repl.co/assets/icons/icon-512x512.png" />
       </Head>
 
       <MantineProvider

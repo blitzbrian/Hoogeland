@@ -2,24 +2,8 @@ import { open } from './Popup';
 import Title from './Title';
 import { Paper } from '@mantine/core';
 
-interface Subject {
-  start: number;
-  end: number;
-  hour: string;
-  title: string;
-  location: string;
-  description: string;
-  teacher: string;
-  test: boolean;
-  homework: string;
-  break: boolean;
-  bigBreak: boolean;
-  breakStart: number;
-  breakEnd: number;
-}
-
 interface Props {
-  subject: Subject;
+  subject: any;
 }
 
 const Subject: React.FC<Props> = ({ subject }) => {
@@ -36,7 +20,7 @@ const Subject: React.FC<Props> = ({ subject }) => {
           withBorder
           onClick={() => open(subject, true)}
         >
-          <Title subject={subject} Break={true}/>
+          <Title subject={subject} Break={true} done={false}/>
         </Paper>
       )}
       <Paper
@@ -49,7 +33,7 @@ const Subject: React.FC<Props> = ({ subject }) => {
         withBorder
         onClick={() => open(subject, false)}
       >
-        <Title subject={subject} Break={false}/>
+        <Title subject={subject} Break={false} done={subject.Afgerond} />
       </Paper>
     </>
   );
