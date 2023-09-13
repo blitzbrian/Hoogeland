@@ -92,7 +92,7 @@ export async function getServerSideProps({ req, res }) {
     }
   }
   
-  const response = await fetch('https://hoogeland.dazerstudio.repl.co/api/days', {
+  const response = await fetch('https://hoogeland.eu.org/api/days', {
     method: 'GET',     
     headers: { 
       'content-type': 'application/json',
