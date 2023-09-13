@@ -43,7 +43,7 @@ export default function App(props: AppProps) {
         <meta property="og:description" content="Pauzes en meer voor Hoogeland" />
         <meta property="og:site_name" content="Hoogeland" />
         <meta property="og:url" content="https://hoogeland.eu.org" />
-        <meta property="og:image" content="https://hoogeland.dazerstudio.repl.co/assets/icons/icon-512x512.png" />
+        <meta property="og:image" content="https://hoogeland.eu.org/assets/icons/icon-512x512.png" />
       </Head>
 
       <MantineProvider

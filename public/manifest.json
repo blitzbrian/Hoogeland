@@ -56,7 +56,7 @@
         "type": "image/png",
         "purpose": "maskable any"
         }
-    ]
+    ],
     "theme_color": "#1a1b1e",
     "background_color": "#1a1b1e",
     "start_url": "/",
