@@ -127,6 +127,13 @@ const Popup = () => {
             <>
               <Divider variant="dotted" sx={{ width: '200%' }} />
               <tr>
+                <th>Stroom</th>
+                <td>
+                  {subject.stroom}
+                </td>
+              </tr>
+              <Divider variant="dotted" sx={{ width: '200%' }} />
+              <tr>
                 <th>Begin</th>
                 <td>
                   {new Date(subject?.breakStart || 0).toLocaleTimeString('nl-NL', {

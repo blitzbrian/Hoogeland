@@ -16,10 +16,11 @@ export default function App(props: AppProps) {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Hoogeland" />
-        <meta name="description" content="Pauzes voor Magister" />
+        <meta name="description" content="Pauzes en meer voor Hoogeland" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#000000" />
+        <meta httpEquiv='content-language' content='nl' />
         
         <link rel="apple-touch-icon" href="/ios/512.png" />
         <link rel="apple-touch-icon" sizes="152x152" href="/ios/152.png" />
@@ -32,16 +33,16 @@ export default function App(props: AppProps) {
         <link rel="shortcut icon" href="/favicon.ico" />
 
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:url" content="https://hoogeland.dazerstudio.repl.co" />
+        <meta name="twitter:url" content="https://hoogeland.eu.org" />
         <meta name="twitter:title" content="Hoogeland" />
-        <meta name="twitter:description" content="Pauzes voor Magister" />
-        <meta name="twitter:image" content="https://hoogeland.dazerstudio.repl.co/android/android-launchericon-192-192.png" />
+        <meta name="twitter:description" content="Pauzes en meer voor Hoogeland" />
+        <meta name="twitter:image" content="https://hoogeland.eu.org/android/android-launchericon-192-192.png" />
         <meta name="twitter:creator" content="@Dazerstudio" />
         <meta property="og:type" content="website" />
         <meta property="og:title" content="Hoogeland" />
-        <meta property="og:description" content="Pauzes voor Magister" />
+        <meta property="og:description" content="Pauzes en meer voor Hoogeland" />
         <meta property="og:site_name" content="Hoogeland" />
-        <meta property="og:url" content="https://hoogeland.dazerstudio.repl.co" />
+        <meta property="og:url" content="https://hoogeland.eu.org" />
         <meta property="og:image" content="https://hoogeland.dazerstudio.repl.co/windows11/Square150x150Logo.scale-400.png" />
       </Head>
 

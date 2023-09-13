@@ -16,6 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   subject.break = undefined;
   subject.breakStart = undefined;
   subject.breakEnd = undefined;
+  subject.type = undefined;
+  subject.stroom = undefined;
   
   const response = await fetch(`https://isw.magister.net/api/personen/${req.cookies.userId}/afspraken/${subject.Id}`, {
   "headers": {

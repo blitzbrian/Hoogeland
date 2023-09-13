@@ -17,8 +17,6 @@ interface Props {
 const Home: NextPage<Props> = ({ data }) => {
   const router = useRouter()  
   
-  let [ tempData, setTempData ] = useState()
-
   let [ days, setDays ] = useState(data);
 
   
@@ -75,10 +73,10 @@ const Home: NextPage<Props> = ({ data }) => {
       </Head>
       <Header height={60} p="xs">
         <Image alt="" src={"/logo.svg"} height={40} width={80} />
-        <Datepicker setData={setTempData}/>
+        <Datepicker setData={setDays}/>
       </Header>
-      {((days && days.success !== false) || tempData) &&
-        <Days days={(tempData ||  days)} />
+      {(days && days.success !== false) &&
+        <Days days={days} />
       }
       <Popup />
     </>

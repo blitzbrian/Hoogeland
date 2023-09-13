@@ -21,23 +21,15 @@ const Title: React.FC<Props> = ({ subject, Break }) => {
           </Badge>
         )}
         {subject ? subject.Omschrijving.split('-').splice(0, 2).join('-') + (subject.Lokatie ? ('- ' + subject.Lokatie) : '') : ''}
-        {/* {subject?.toets && (
-          <Badge
-            sx={{ marginLeft: '5px', cursor: 'pointer' }}
-            radius="md"
-            variant="filled"
-          >
-            Toets
-          </Badge>
-        )} */}
-        {subject?.Inhoud && (
+        
+        {subject?.type && (
           <Badge
             sx={{ marginLeft: '5px', cursor: 'pointer' }}
             radius="md"
             variant="filled"
             color={subject.Afgerond ? "teal" : undefined}
           >
-            Huiswerk
+            {subject.type}
           </Badge>
         )}
       </>

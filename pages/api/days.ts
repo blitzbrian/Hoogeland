@@ -68,6 +68,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     item.Start = new Date(item.Start).getTime();
     item.Einde = new Date(item.Einde).getTime();
+
+    switch(item.InfoType) {
+      case 1:
+        item.type = 'Huiswerk';
+        break;
+      case 2:
+        item.type = 'Proefwerk';
+        break;
+      case 3:
+        item.type = 'Tentamen';
+        break;
+      case 4:
+        item.type = 'SO';
+        break;
+      case 5:
+        item.type = 'MO';
+        break;
+    }
     
     day.subjects.push(item);
   });
@@ -117,17 +135,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           // Small Break
           smallBreak1 = true
           subject.Start += 900000
+          subject.stroom = '1';
           smallBreak()
         }
         else if (hour === 5) {
           // Big Break
           subject.Start += 1800000
+          subject.stroom = '1';
           bigBreakFn()
         }
         else if (hour === 7 && !minirooster) {
           // Small Break
           smallBreak2 = true
           subject.Start += 900000
+          subject.stroom = '1';
           smallBreak()
         }
       }
@@ -136,17 +157,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // Small Break
         smallBreak1 = true
         if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 900000
+        subject.stroom = '2';
         smallBreak()
       }
       else if (hour === 6 && !bigBreak) {
         // Big Break
         if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 1800000
+        subject.stroom = '2';
         bigBreakFn()
       }
       else if (hour === 8 && !smallBreak2 && !minirooster) {
         // Small Break
         smallBreak2 = true
         if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 900000
+        subject.stroom = '2';
         smallBreak()
       }
 
