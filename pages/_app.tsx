@@ -10,6 +10,7 @@ export default function App(props: AppProps) {
     <>
       <Head>
         <title>Hoogeland</title>
+        <meta name="google" content="notranslate" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="application-name" content="Hoogeland" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

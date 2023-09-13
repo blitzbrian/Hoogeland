@@ -64,17 +64,23 @@ const Login: NextPage = () => {
           <Button fullWidth mt="xl" onClick={async () => {
             setLoading(true);
             setError('');
+
+            let expires: any = new Date()
+            // @ts-ignore
+            expires.setYear(expires.getFullYear() + 1)
+            expires = expires.getTime()
+                  
             // @ts-ignore
             cookieStore.set({
               name: 'username',
               value: username,
-              expires: new Date().getTime() + 31536000
+              expires
             });
             // @ts-ignore
             cookieStore.set({
               name: 'password',
               value: password,
-              expires: new Date().getTime() + 31536000
+              expires
             });
       
             const response = await fetch('/api/login', { 
@@ -97,13 +103,13 @@ const Login: NextPage = () => {
             cookieStore.set({
               name: 'token',
               value: data.token,
-              expires: new Date().getTime() + 31536000
+              expires
             });
             // @ts-ignore
             cookieStore.set({
               name: 'userId',
               value: data.userId,
-              expires: new Date().getTime() + 31536000
+              expires
             });
       
             setLoading(false);
