@@ -128,7 +128,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         subject.Vakken[0].Naam == 'Lichamelijke opvoeding' ||
         (location >= 104 && location <= 127) ||
         (location >= 228 && location <= 258) ||
-        (location >= 71 && location <= 82)
+        (location >= 71 && location <= 88)
       ) {
         // Break flow 1  
         if (hour === 3 && !minirooster) {
@@ -183,49 +183,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   
   res.status(200).json(days);
 }
-
-// const minirooster1locatie =
-//   (location >= 51 && location <= 88) ||
-//   (location >= 104 && location <= 127) ||
-//   (location >= 228 && location <= 258);
-// const minirooster2locatie =
-//   subject.description == 'lichamelijke opvoeding' ||
-//   (location >= 201 && location <= 227) ||
-//   (location >= 301 && location <= 330);
-// const miniroosterPauze1 = lesuur == 6 && minirooster1locatie && minirooster;
-// const miniroosterPauze2 =
-//   lesuur == 7 &&
-//   minirooster2locatie &&
-//   minirooster &&
-//   !subject.dontAllowStroom2;
-// else if (grotePauze2 && !minirooster) subjects[i - 1].end -= 1800000;
-// else if (
-//   minirooster &&
-//   (miniroosterPauze1 || miniroosterPauze2) &&
-//   new Date(subject.end).getMinutes() == new Date(subject.start).getMinutes()
-// )
-//   subject.start += 1800000;
-// else if (
-//   minirooster &&
-//   (miniroosterPauze1 || miniroosterPauze2) &&
-//   new Date(subjects[i - 1].end).getMinutes() ==
-//   new Date(subjects[i - 1].start).getMinutes()
-// )
-//   subjects[i - 1].end -= 1800000;
-// if (
-//   (((grotePauze1 || stroom1) && !minirooster) || miniroosterPauze1) &&
-//   subjects[i + 1]
-// )
-//   subjects[i + 1].dontAllowStroom2 = true;
-// if (
-//   !subject.dontAllowStroom2 &&
-//   lesuur == 8 &&
-//   subjects[i + 1] == null &&
-//   !minirooster
-// )
-//   subject.end -= 900000;
-// subject.pauze = (stroom1 || stroom2) && !minirooster;
-// subject.grotePauze =
-//   ((grotePauze1 || grotePauze2) && !minirooster) ||
-//   miniroosterPauze1 ||
-//   miniroosterPauze2;

@@ -18,53 +18,6 @@ const Home: NextPage<Props> = ({ data }) => {
   const router = useRouter()  
   
   let [ days, setDays ] = useState(data);
-
-  
-  useEffect(() => {
-    (async () => {
-      if(data.success === false) {
-
-        let response = await fetch('/api/login', { 
-          method: 'GET', 
-          headers: {
-            'content-type': 'application/json'
-          },
-          credentials: 'include'
-        });
-  
-        let data = await response.json()
-  
-        if(!data.success) return
-
-        let expires: any = new Date()
-        // @ts-ignore
-        expires.setYear(expires.getFullYear() + 1)
-        expires = expires.getTime()        
-        // @ts-ignore
-        cookieStore.set({
-          name: 'token',
-          value: data.token,
-          expires
-        });
-        // @ts-ignore
-        cookieStore.set({
-          name: 'userId',
-          value: data.userId,
-          expires
-        });
-
-        response = await fetch('/api/days', {
-          method: 'GET',
-          headers: {
-            'content-type': 'application/json'
-          },
-          credentials: 'include'
-        });
-
-        setDays(await response.json());
-        
-    }})();
-  }, [data]);
   
   return (
     <>
@@ -83,6 +36,8 @@ const Home: NextPage<Props> = ({ data }) => {
   )
 }
 
+const url = 'https://hoogeland.eu.org'
+
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
   if(!req.cookies.userId || !req.cookies.token) return {
@@ -92,16 +47,50 @@ export async function getServerSideProps({ req, res }) {
     }
   }
   
-  const response = await fetch('https://hoogeland.eu.org/api/days', {
+  let response = await fetch(url + '/api/days', {
     method: 'GET',     
     headers: { 
       'content-type': 'application/json',
       'cookie': req.headers.cookie
     },
   });
-  
-  const data = await response.json()
 
+  let data = await response.json()
+
+  // Relog
+  
+  if(data.success === false) {
+    response = await fetch(url + '/api/login', { 
+      method: 'GET', 
+      headers: {
+        'content-type': 'application/json',
+        'cookie': req.headers.cookie
+      },
+    });
+
+    data = await response.json()
+
+    if(!data.success) return
+
+    let expires: any = new Date()
+    
+    // @ts-ignore
+    expires.setYear(expires.getFullYear() + 1)
+    expires = expires.getTime()        
+
+    res.setHeader('set-cookie', [`token=${data.token}; Expires=${expires}; Secure`, `userId=${data.userId}; Expires=${expires}; Secure`])
+    
+    response = await fetch(url + '/api/days', {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        'cookie': `token=${data.token}; userId=${data.userId}`
+      },
+    });
+
+    data = await response.json();
+  }
+  
   return { props: { data } }
 }
 
