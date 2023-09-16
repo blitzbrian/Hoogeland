@@ -7,18 +7,17 @@ import Image from "next/image"
 import { Header } from '@mantine/core'
 import Days from '../components/Days'
 import Datepicker from '../components/Datepicker'
-
-const Popup = dynamic(() => import('../components/Popup'));
+import Popup from '../components/Popup'
 
 interface Props {
   data: any
 }
 
 const Home: NextPage<Props> = ({ data }) => {
-  const router = useRouter()  
-  
-  let [ days, setDays ] = useState(data);
-  
+  const router = useRouter()
+
+  let [days, setDays] = useState(data);
+
   return (
     <>
       <Head>
@@ -26,7 +25,7 @@ const Home: NextPage<Props> = ({ data }) => {
       </Head>
       <Header height={60} p="xs">
         <Image alt="logo" src={"/logo.svg"} height={40} width={80} />
-        <Datepicker setData={setDays}/>
+        <Datepicker setData={setDays} />
       </Header>
       {(days && days.success !== false) &&
         <Days days={days} />
@@ -36,21 +35,17 @@ const Home: NextPage<Props> = ({ data }) => {
   )
 }
 
-const url = 'https://hoogeland.eu.org'
+const url = 'https://hoogeland.eu.org';
 
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
-  if(!req.cookies.userId || !req.cookies.token) return {
-    redirect: {
-      destination: '/login',
-      permanent: false
-    }
+  // @ts-ignore
+  if(!req.cookies.userId || !req.cookies.token) {
+    return { props: {} }
   }
-  
+
   let response = await fetch(url + '/api/days', {
-    method: 'GET',     
-    headers: { 
-      'content-type': 'application/json',
+    headers: {
       'cookie': req.headers.cookie
     },
   });
@@ -58,39 +53,35 @@ export async function getServerSideProps({ req, res }) {
   let data = await response.json()
 
   // Relog
-  
-  if(data.success === false) {
-    response = await fetch(url + '/api/login', { 
-      method: 'GET', 
+
+  if (data.success === false) {
+    response = await fetch(url + '/api/login', {
       headers: {
-        'content-type': 'application/json',
         'cookie': req.headers.cookie
       },
     });
 
     data = await response.json()
 
-    if(!data.success) return
+    if (!data.success) return { props: { data } }
 
     let expires: any = new Date()
-    
+
     // @ts-ignore
     expires.setYear(expires.getFullYear() + 1)
-    expires = expires.getTime()        
+    expires = expires.toUTCString()
 
     res.setHeader('set-cookie', [`token=${data.token}; Expires=${expires}; Secure`, `userId=${data.userId}; Expires=${expires}; Secure`])
-    
+
     response = await fetch(url + '/api/days', {
-      method: 'GET',
       headers: {
-        'content-type': 'application/json',
         'cookie': `token=${data.token}; userId=${data.userId}`
       },
     });
 
     data = await response.json();
   }
-  
+
   return { props: { data } }
 }
 

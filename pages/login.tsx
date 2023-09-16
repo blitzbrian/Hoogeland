@@ -22,10 +22,10 @@ const Login: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    (async () => {
-      // @ts-ignore
-      if (await cookieStore.get('userId') !== null && await cookieStore.get('token') !== null) router.push('/')
-    })();
+    // (async () => {
+    //   // @ts-ignore
+    //   if (await cookieStore.get('userId') !== null && await cookieStore.get('token') !== null) router.push('/')
+    // })();
     router.prefetch('/')
   }, [router])
 
@@ -84,10 +84,6 @@ const Login: NextPage = () => {
             });
       
             const response = await fetch('/api/login', { 
-              method: 'GET', 
-              headers: {
-                'content-type': 'application/json'
-              },
               credentials: 'include'
             });
 

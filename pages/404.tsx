@@ -11,15 +11,15 @@ const ErrorPage = () => {
         <title>Hoogeland: 404</title>
       </Head>
       <div className={classes.label}>404</div>
-      <Title className={classes.title}>You have found a secret place.</Title>
+      <Title className={classes.title}>Je hebt een geheime plek gevonden.</Title>
       <Text color="dimmed" size="lg" align="center" className={classes.description}>
-        Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has
-        been moved to another URL.
+        Helaas is dit slechts een 404 pagina. Mogelijk hebt u het adres verkeerd getypt of heeft de pagina
+        zich verplaatst.
       </Text>
       <Group position="center">
         <Link href="/">
           <Button variant="subtle" size="md">
-            Take me back to home page
+            Breng me terug naar de home pagina
           </Button>
         </Link>
       </Group>

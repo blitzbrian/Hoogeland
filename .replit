@@ -9,12 +9,13 @@ regex = "Error \\[ERR_REQUIRE_ESM\\]"
 message = "We see that you are using require(...) inside your code. We currently do not support this syntax. Please use 'import' instead when using external modules. (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)"
 
 [nix]
-channel = "stable-21_11"
+channel = "stable-22_11"
 
 [env]
-XDG_CONFIG_HOME = "/home/runner/.config"
-PATH = "/home/runner/$REPL_SLUG/.config/npm/node_global/bin:/home/runner/$REPL_SLUG/node_modules/.bin"
-npm_config_prefix = "/home/runner/$REPL_SLUG/.config/npm/node_global"
+XDG_CONFIG_HOME = "$REPL_HOME/.config"
+PATH = "$REPL_HOME/.config/npm/node_global/bin:$REPL_HOME/node_modules/.bin"
+npm_config_prefix = "$REPL_HOME/.config/npm/node_global"
+NEXT_TELEMETRY_DISABLED = "1"
 
 [packager]
 language = "nodejs"
@@ -76,3 +77,8 @@ support = true
 [deployment]
 build = ["sh", "-c", "npm run build"]
 run = ["sh", "-c", "npm run start"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 80

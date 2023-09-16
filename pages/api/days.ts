@@ -101,8 +101,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const hour = subject.LesuurVan;
       const location = parseInt(subject.Lokatie);
 
-      if (hour === NaN || location === NaN) return subject;
+      if (typeof hour !== 'number' || typeof location !== 'number') return subject;
       if (hour < 3 || hour > 8) return subject;
+      
       const smallBreak = () => {
         subject.break = true
         subject.breakStart = subjects[i - 1]?.Einde
