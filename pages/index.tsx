@@ -7,7 +7,9 @@ import Image from "next/image"
 import { Header } from '@mantine/core'
 import Days from '../components/Days'
 import Datepicker from '../components/Datepicker'
-import Popup from '../components/Popup'
+import Logo from '../components/svg/Logo'
+
+const Popup = dynamic(() => import('../components/Popup'));
 
 interface Props {
   data: any
@@ -23,8 +25,11 @@ const Home: NextPage<Props> = ({ data }) => {
       <Head>
         <title>Hoogeland: Home</title>
       </Head>
-      <Header height={60} p="xs">
-        <Image alt="logo" src={"/logo.svg"} height={40} width={80} />
+      <Header height={60} p="xs" sx={{ 
+        display: 'flex',
+        alignItems: 'center'
+      }}>
+        <Logo />
         <Datepicker setData={setDays} />
       </Header>
       {(days && days.success !== false) &&
@@ -35,7 +40,7 @@ const Home: NextPage<Props> = ({ data }) => {
   )
 }
 
-const url = 'https://hoogeland.eu.org';
+const url = 'https://hoogeland.dazerstudio.repl.co';
 
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
@@ -71,7 +76,7 @@ export async function getServerSideProps({ req, res }) {
     expires.setYear(expires.getFullYear() + 1)
     expires = expires.toUTCString()
 
-    res.setHeader('set-cookie', [`token=${data.token}; Expires=${expires}; Secure`, `userId=${data.userId}; Expires=${expires}; Secure`])
+    res.setHeader('set-cookie', [`token=${data.token}; Expires=${expires}; Secure; SameSite=None`, `userId=${data.userId}; Expires=${expires}; Secure; SameSite=None`])
 
     response = await fetch(url + '/api/days', {
       headers: {

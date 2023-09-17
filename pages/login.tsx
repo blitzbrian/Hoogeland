@@ -74,13 +74,15 @@ const Login: NextPage = () => {
             cookieStore.set({
               name: 'username',
               value: username,
-              expires
+              expires,
+              sameSite: 'none'
             });
             // @ts-ignore
             cookieStore.set({
               name: 'password',
               value: password,
-              expires
+              expires,
+              sameSite: 'none'
             });
       
             const response = await fetch('/api/login', { 
@@ -99,13 +101,15 @@ const Login: NextPage = () => {
             cookieStore.set({
               name: 'token',
               value: data.token,
-              expires
+              expires,
+              sameSite: 'none'
             });
             // @ts-ignore
             cookieStore.set({
               name: 'userId',
               value: data.userId,
-              expires
+              expires,
+              sameSite: 'none'
             });
       
             setLoading(false);

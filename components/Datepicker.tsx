@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { ActionIcon } from '@mantine/core'
 import Image from 'next/image'
 import dynamic from 'next/dynamic' 
+import Calendar from './svg/Calendar'
 
-// These are not needed in first render, so they are imported dynamically
-// But typescipt doesn't like that
+
 const DatePicker = dynamic(() => import('@mantine/dates').then(module => module.DatePicker))
 const Modal = dynamic(() => import('@mantine/core').then(module => module.Modal))
 const Group = dynamic(() => import('@mantine/core').then(module => module.Group))
@@ -43,8 +43,8 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
     setData(json)
   }
   return <>
-    <ActionIcon sx={{ float: 'right' }} onClick={open}>
-          <Image alt="Calendar" src="/calendar.svg" height={20} width={20} />
+    <ActionIcon sx={{ marginLeft: 'auto' }} onClick={open}>
+      <Calendar />
     </ActionIcon>
     <Modal 
       opened={opened} 
