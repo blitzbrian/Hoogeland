@@ -40,7 +40,7 @@ const Home: NextPage<Props> = ({ data }) => {
   )
 }
 
-const url = 'https://hoogeland.dazerstudio.repl.co';
+const url = 'https://hoogeland.eu.org';
 
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
