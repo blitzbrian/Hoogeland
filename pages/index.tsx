@@ -45,13 +45,10 @@ const Home: NextPage<Props> = ({ data }) => {
 
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
-  // @ts-ignore
-  if(!req.cookies.userId || !req.cookies.idsrv) {
-    return { props: { data: {} } }
-  }
-
   let data: any = await getDays(req.cookies.idsrv, req.cookies.userId);
 
+  if(data.success === false && (!req.cookies.username || !req.cookies.password)) return { props: { data: { success: false } } }
+  
   // Relog
 
   if (data.success === false) {
