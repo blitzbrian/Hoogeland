@@ -313,9 +313,14 @@ export async function login<Input> (username, password) {
     "mode": "cors",
   });
 
+  cookies = {
+    ...cookies,
+    ...headersToCookie(res.headers)
+  }
+  
   data = await res.json();
 
-  return {userId: data.Persoon?.Id, token, success: true, status: 200};
+  return {userId: data.Persoon?.Id, token, idsrv: cookies.idsrv, success: true, status: 200};
 }
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
@@ -326,5 +331,5 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   let data = await login(request.cookies.username, request.cookies.password);
   
-  response.status(data.status).json(data.success ? { success: true, userId: data.userId, token: data.token } : { success: false, error: data.error });
+  response.status(data.status).json(data.success ? { success: true, userId: data.userId, idsrv: data.idsrv } : { success: false, error: data.error });
 } 

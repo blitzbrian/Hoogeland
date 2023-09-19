@@ -15,7 +15,7 @@ module.exports = withPWA({
           },
           {
             type: 'cookie',
-            key: 'token'
+            key: 'idsrv'
           }
         ],
         permanent: false,
@@ -30,7 +30,7 @@ module.exports = withPWA({
           },
           {
             type: 'cookie',
-            key: 'token'
+            key: 'idsrv'
           }
         ],
         permanent: false,

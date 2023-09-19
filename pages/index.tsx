@@ -46,11 +46,11 @@ const Home: NextPage<Props> = ({ data }) => {
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
   // @ts-ignore
-  if(!req.cookies.userId || !req.cookies.token) {
+  if(!req.cookies.userId || !req.cookies.idsrv) {
     return { props: { data: {} } }
   }
 
-  let data: any = await getDays(req.cookies.token, req.cookies.userId);
+  let data: any = await getDays(req.cookies.idsrv, req.cookies.userId);
 
   // Relog
 
@@ -68,9 +68,9 @@ export async function getServerSideProps({ req, res }) {
     expires.setYear(expires.getFullYear() + 1)
     expires = expires.toUTCString()
     
-    res.setHeader('set-cookie', [`token=${data.token}; Expires=${expires}; Secure; SameSite=None`, `userId=${data.userId}; Expires=${expires}; Secure; SameSite=None`])
+    res.setHeader('set-cookie', [`idsrv=${data.idsrv}; Expires=${expires}; Secure; SameSite=None`, `userId=${data.userId}; Expires=${expires}; Secure; SameSite=None`])
 
-    data = await getDays(data.token, data.userId);
+    data = await getDays(data.idsrv, data.userId);
 
     if (data.success === false) return {
       redirect: {

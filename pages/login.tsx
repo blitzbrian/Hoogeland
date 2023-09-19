@@ -22,10 +22,6 @@ const Login: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    // (async () => {
-    //   // @ts-ignore
-    //   if (await cookieStore.get('userId') !== null && await cookieStore.get('token') !== null) router.push('/')
-    // })();
     router.prefetch('/')
   }, [router])
 
@@ -99,8 +95,8 @@ const Login: NextPage = () => {
 
             // @ts-ignore
             cookieStore.set({
-              name: 'token',
-              value: data.token,
+              name: 'idsrv',
+              value: data.idsrv,
               expires,
               sameSite: 'none'
             });
