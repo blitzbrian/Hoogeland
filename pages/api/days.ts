@@ -7,23 +7,16 @@ function dateToFormat(date: Date) {
   // yyyy-mm-dd
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const body = req.cookies;
-  
-  if(!body.userId || !body.token) {
-    res.status(400).json({ success: false, error: 'Missing user id or auth token' });
-    return;
-  }
-
-  const from = req.body.date ? new Date(req.body.date) : new Date();
+export async function getDays<Input> (token: any, userId: any, date?: any) {
+  const from = date ? new Date(date) : new Date();
 
   const to = new Date(from.getTime() + /* A Week */ 604800000);
   
-  let response = await fetch(`https://isw.magister.net/api/personen/${body.userId}/afspraken?status=1&tot=${dateToFormat(to)}&van=${dateToFormat(from)}`, {
+  let response = await fetch(`https://isw.magister.net/api/personen/${userId}/afspraken?status=1&tot=${dateToFormat(to)}&van=${dateToFormat(from)}`, {
     "headers": {
       "accept": "application/json, text/plain, */*",
       "accept-language": "nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
-      "authorization": body.token,
+      "authorization": token,
       "sec-ch-ua": "\"Chromium\";v=\"116\", \"Not)A;Brand\";v=\"24\", \"Microsoft Edge\";v=\"116\"",
       "sec-ch-ua-mobile": "?0",
       "sec-ch-ua-platform": "\"Windows\"",
@@ -41,10 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let data = await response.json();
 
   
-  if(data === "Invalid Operation" || data === "SecurityToken Expired") {  
-    res.status(401).json({ success: false, error: data }); 
-    return;
-  }
+  if(data === "Invalid Operation" || data === "SecurityToken Expired") return { success: false, error: data, status: 401 };
 
   let days: any[] = [];
 
@@ -181,6 +171,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
     return day;
   });
+
+  return { days, success: true, status: 200 };
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const body = req.cookies;
   
-  res.status(200).json(days);
+  if(!body.userId || !body.token) {
+    res.status(400).json({ success: false, error: 'Missing user id or auth token' });
+    return;
+  }
+
+  let data = await getDays(body.token, body.userId, req.body?.date);
+  
+  res.status(data.status).json(data.success === true ? data.days : { success: false, error: data.error });
 }

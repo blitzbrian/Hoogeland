@@ -3,7 +3,7 @@ const Logo = () => {
     width: '80px',
     height: '40px'
   }} version="1.1" id="Laag_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-    viewBox="0 0 159.1 79.4" enable-background="new 0 0 159.1 79.4" xmlSpace="preserve">
+    viewBox="0 0 159.1 79.4" enableBackground="new 0 0 159.1 79.4" xmlSpace="preserve">
     <g>
       <path fill="#009FDA" d="M116.5,42.3c-3-4.2,21.7-39.8,29.5-35.3c11.5,6.6,15.7,31.3,11.5,40.1C153.3,55.9,120.8,48.3,116.5,42.3z"
       />

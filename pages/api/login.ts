@@ -42,15 +42,14 @@ const generateNonce = () => {
   return state;
 }
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-	let cookies = {};
+interface Input {
+  username: any,
+  password: any
+}
 
-  
-  if(!request.cookies.username || !request.cookies.password) {
-    response.status(400).json({ error: 'Incorrecte inloggegevens', success: false })
-    return;
-  }
-  
+export async function login<Input> (username, password) {
+  let cookies = {};
+
   // Begin Auth
   
 	let res = await fetch(
@@ -146,7 +145,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
 	};
 
   // Get Session
-  
+   
 	res = await fetch('https://accounts.magister.net/challenges/current', {
 		headers: {
 			accept: 'application/json',
@@ -181,15 +180,11 @@ export default async function handler(request: NextApiRequest, response: NextApi
 	let data = await res.json();
 
   if(data.error === "AuthCodeValidation") {
-    response.status(500).json({ success: false, error: 'Auth code out of date' })
+    return { status: 500, success: false, error: 'Auth code out of date' } ;
     console.log('Auth code out of date!');
-    return;
   };
 
-  if(data.action !== 'username') {
-    response.status(500).json(data);
-    return;
-  }
+  if(data.action !== 'username') return { status: 500, data, success: false };
 
   // Username
   
@@ -210,7 +205,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     "referrer": "https://accounts.magister.net/",
     "referrerPolicy": "origin",
     "body": JSON.stringify({
-      username: request.cookies.username,
+      username,
       returnUrl,
       sessionId,
       authCode
@@ -226,10 +221,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   
   data = await res.json();
 
-  if(data.error === "InvalidUsername") {
-    response.status(400).json({ success: false, error: 'Incorrecte inloggegevens'})
-    return;
-  };
+  if(data.error === "InvalidUsername") return { status: 400, success: false, error: 'Incorrecte inloggegevens' };
 
   // Password
   
@@ -250,7 +242,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
     "referrer": "https://accounts.magister.net/",
     "referrerPolicy": "origin",
     "body": JSON.stringify({
-      password: request.cookies.password,
+      password,
       returnUrl,
       sessionId,
       authCode,
@@ -267,10 +259,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   
   data = await res.json();
 
-  if(data.error === "InvalidUsernameOrPassword") {
-    response.status(400).json({ success: false, error: 'Incorrecte inloggegevens'})
-    return;
-  };
+  if(data.error === "InvalidUsernameOrPassword") return { status: 400, success: false, error: 'Incorrecte inloggegevens' };
   
   res = await fetch('https://accounts.magister.net'+  data.redirectURL, {
     "headers": {
@@ -326,8 +315,16 @@ export default async function handler(request: NextApiRequest, response: NextApi
 
   data = await res.json();
 
-  const userId = data.Persoon.Id;
-  
-  response.status(200).json({ token, userId, success: true });
-} 
+  return {userId: data.Persoon?.Id, token, success: true, status: 200};
+}
 
+export default async function handler(request: NextApiRequest, response: NextApiResponse) {
+  if(!request.cookies.username || !request.cookies.password) {
+    response.status(400).json({ error: 'Incorrecte inloggegevens', success: false })
+    return;
+  }
+
+  let data = await login(request.cookies.username, request.cookies.password);
+  
+  response.status(data.status).json(data.success ? { success: true, userId: data.userId, token: data.token } : { success: false, error: data.error });
+} 
