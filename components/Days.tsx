@@ -38,6 +38,7 @@ const Days: React.FC<Props> = (props) => {
           lineHeight: 'normal !important',
         },
       }}
+      transitionDuration={300}
       defaultValue={new Date().toDateString()}
     >
       {props.days?.map((day: any) => (

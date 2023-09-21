@@ -1,5 +1,5 @@
 import Title from './Title';
-import { Modal, Divider, Switch } from '@mantine/core';
+import { Modal, Divider, Switch, TypographyStylesProvider } from '@mantine/core';
 import { useState } from 'react';
 
 // @ts-ignore
@@ -43,7 +43,8 @@ const Popup: React.FC<Props> = ({ setDays }) => {
     const res = await fetch('/api/days', {
       method: 'GET',
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        'token': 'true'
       },
       credentials: 'include'
     });
@@ -192,13 +193,15 @@ const Popup: React.FC<Props> = ({ setDays }) => {
             </strong>
              <Switch sx={{ display: 'inline-block', marginLeft: 'auto'}} checked={checked} onChange={onCheck}/>
           </div>
-          <p
-            style={{
-              marginTop: 0,
-              marginLeft: '2.5px',
-            }}
-            dangerouslySetInnerHTML={{ __html: `${subject?.Inhoud}` }}
-          ></p>
+          <TypographyStylesProvider>
+            <p
+              style={{
+                marginTop: 0,
+                marginLeft: '2.5px',
+              }}
+              dangerouslySetInnerHTML={{ __html: `${subject?.Inhoud}` }}
+            ></p>
+          </TypographyStylesProvider>
         </>
       )}
     </Modal>

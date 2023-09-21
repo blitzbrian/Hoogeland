@@ -25,38 +25,43 @@ const generateNonce = () => {
   return state;
 }
 
-export async function getDays(idsrv: any, userId: any, date?: any) {
+export async function getDays(idsrv: any, userId: any, oldToken?: any, date?: any) {
 
+  let token = oldToken;
+  
+  if(!oldToken) {
+  
   // Get Token
   
-  let response = await fetch(`https://accounts.magister.net/connect/authorize?client_id=M6-isw.magister.net&redirect_uri=https%3A%2F%2Fisw.magister.net%2Foidc%2Fredirect_callback.html&response_type=id_token%20token&scope=openid%20profile%20opp.read%20opp.manage%20attendance.overview%20calendar.ical.user%20calendar.to-do.user&state=${generateState()}&nonce=${generateNonce()}&acr_values=tenant%3Aisw.magister.net`, {
-    headers: {
-      accept:
-'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-      'accept-language': 'nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7',
-      'sec-ch-ua':
-        '"Chromium";v="116", "Not)A;Brand";v="24", "Microsoft Edge";v="116"',
-      'sec-ch-ua-mobile': '?0',
-      'sec-ch-ua-platform': '"Windows"',
-      'sec-fetch-dest': 'document',
-      'sec-fetch-mode': 'navigate',
-      'sec-fetch-site': 'same-site',
-      'upgrade-insecure-requests': '1',
-      'cookie': `idsrv=${idsrv}`
-    },
-    redirect: 'manual'
-	});
+    const response = await fetch(`https://accounts.magister.net/connect/authorize?client_id=M6-isw.magister.net&redirect_uri=https%3A%2F%2Fisw.magister.net%2Foidc%2Fredirect_callback.html&response_type=id_token%20token&scope=openid%20profile%20opp.read%20opp.manage%20attendance.overview%20calendar.ical.user%20calendar.to-do.user&state=${generateState()}&nonce=${generateNonce()}&acr_values=tenant%3Aisw.magister.net`, {
+      headers: {
+        accept:
+  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7',
+        'sec-ch-ua':
+          '"Chromium";v="116", "Not)A;Brand";v="24", "Microsoft Edge";v="116"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'same-site',
+        'upgrade-insecure-requests': '1',
+        'cookie': `idsrv=${idsrv}`
+      },
+      redirect: 'manual'
+  	});
 
-  // @ts-ignore
-  const url = new URL(response.headers.get('location').replace('#', '?'));
-
-  const token = 'Bearer ' + url.searchParams.get('access_token');
+    // @ts-ignore
+    const url = new URL(response.headers.get('location').replace('#', '?'));
+  
+    token = 'Bearer ' + url.searchParams.get('access_token');
+  }
   
   const from = date ? new Date(date) : new Date();
 
   const to = new Date(from.getTime() + /* A Week */ 604800000);
   
-  response = await fetch(`https://isw.magister.net/api/personen/${userId}/afspraken?status=1&tot=${dateToFormat(to)}&van=${dateToFormat(from)}`, {
+  const response = await fetch(`https://isw.magister.net/api/personen/${userId}/afspraken?status=1&tot=${dateToFormat(to)}&van=${dateToFormat(from)}`, {
     "headers": {
       "accept": "application/json, text/plain, */*",
       "accept-language": "nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
@@ -75,11 +80,11 @@ export async function getDays(idsrv: any, userId: any, date?: any) {
     "credentials": "include"
   });
 
-  let data = await response.json();
+  const data = await response.json();
 
   
   if(data === "Invalid Operation" || data === "SecurityToken Expired") return { success: false, error: data, status: 401 };
-
+  
   let days: any[] = [];
 
   data.Items.forEach((item: any) => {
@@ -140,13 +145,13 @@ export async function getDays(idsrv: any, userId: any, date?: any) {
       
       const smallBreak = () => {
         subject.break = true
-        subject.breakStart = subjects[i - 1]?.Einde
+        subject.breakStart = subjects[i - 1]?.Einde || subject.Start - 900000
         subject.breakEnd = subject.Start
       }
       const bigBreakFn = () => {
         bigBreak = true
         subject.bigBreak = true
-        subject.breakStart = subjects[i - 1]?.Einde
+        subject.breakStart = subjects[i - 1]?.Einde || subject.Start - 1800000
         subject.breakEnd = subject.Start
       }
       const isMinirooster = () => {
@@ -191,20 +196,20 @@ export async function getDays(idsrv: any, userId: any, date?: any) {
       if (hour === 4 && !smallBreak1 && !minirooster) {
         // Small Break
         smallBreak1 = true
-        if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 900000
+        if (subjects[i - 1]?.Einde === subject.Start) subjects[i - 1].Einde -= 900000
         subject.stroom = '2';
         smallBreak()
       }
       else if (hour === 6 && !bigBreak) {
         // Big Break
-        if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 1800000
+        if (subjects[i - 1]?.Einde === subject.Start) subjects[i - 1].Einde -= 1800000
         subject.stroom = '2';
         bigBreakFn()
       }
       else if (hour === 8 && !smallBreak2 && !minirooster) {
         // Small Break
         smallBreak2 = true
-        if (subjects[i - 1]?.Einde) subjects[i - 1].Einde -= 900000
+        if (subjects[i - 1]?.Eind === subject.Start) subjects[i - 1].Einde -= 900000
         subject.stroom = '2';
         smallBreak()
       }
@@ -216,18 +221,18 @@ export async function getDays(idsrv: any, userId: any, date?: any) {
     return day;
   });
 
-  return { days, success: true, status: 200 };
+  return { days, token, success: true, status: 200 };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const body = req.cookies;
   
-  if(!body.userId || !body.idsrv) {
-    res.status(400).json({ success: false, error: 'Missing user id or idsrv' });
+  if(!body.userId || (!body.idsrv && (!body.token && !req.headers.token))) {
+    res.status(400).json({ success: false, error: 'Missing user id or idsrv / token' });
     return;
   }
 
-  let data = await getDays(body.idsrv, body.userId, req.body?.date);
+  let data = await getDays(body.idsrv, body.userId, (req.headers.token ? body.token : undefined), req.body?.date);
   
   res.status(data.status).json(data.success === true ? data.days : { success: false, error: data.error });
 }

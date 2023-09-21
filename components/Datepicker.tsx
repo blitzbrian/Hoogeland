@@ -33,7 +33,9 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
         date: date?.toDateString()
       }), 
       headers: {
-        'content-type': 'application/json'
+        'content-type': 'application/json',
+        // Make the server use the token instead of fetching it
+        'token': 'true'
       }
     })
     const json = await res.json() 

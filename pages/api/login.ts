@@ -49,7 +49,7 @@ interface Input {
 
 export async function login<Input> (username, password) {
   let cookies = {};
-
+  
   // Begin Auth
   
 	let res = await fetch(
@@ -221,7 +221,7 @@ export async function login<Input> (username, password) {
   
   data = await res.json();
 
-  if(data.error === "InvalidUsername") return { status: 400, success: false, error: 'Incorrecte inloggegevens' };
+  if(data.error === "InvalidUsername" || data.error === 'UserLockedOut') return { status: 400, success: false, error: 'Incorrecte inloggegevens' };
 
   // Password
   
@@ -259,7 +259,7 @@ export async function login<Input> (username, password) {
   
   data = await res.json();
 
-  if(data.error === "InvalidUsernameOrPassword") return { status: 400, success: false, error: 'Incorrecte inloggegevens' };
+  if(data.error === "InvalidUsernameOrPassword" || data.error === 'UserLockedOut') return { status: 400, success: false, error: 'Incorrecte inloggegevens' };
   
   res = await fetch('https://accounts.magister.net'+  data.redirectURL, {
     "headers": {
@@ -320,16 +320,30 @@ export async function login<Input> (username, password) {
   
   data = await res.json();
 
-  return {userId: data.Persoon?.Id, token, idsrv: cookies.idsrv, success: true, status: 200};
+  return {userId: data.Persoon?.Id, token, idsrv: cookies.idsrv, token, success: true, status: 200};
 }
 
 export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-  if(!request.cookies.username || !request.cookies.password) {
+  const username = request.body?.username || request.cookies.username
+
+  const password = request.body?.password || request.cookies.password
+
+  console.log(username, password)
+  
+  if(!username || !password) {
     response.status(400).json({ error: 'Incorrecte inloggegevens', success: false })
     return;
   }
 
-  let data = await login(request.cookies.username, request.cookies.password);
+  let data = await login(username, password);
+
+  let expires: any = new Date()
+  // @ts-ignore
+  expires.setYear(expires.getFullYear() + 1)
+  expires = expires.toUTCString()
+
+  if(data.success) response.setHeader('set-cookie', [`username=${username}; Expires=${expires}; Secure; HttpOnly; SameSite=None; Path=/`, `password=${password}; Expires=${expires}; Secure; HttpOnly; SameSite=None; Path=/`, `idsrv=${data.idsrv}; Expires=${expires}; Secure; HttpOnly; SameSite=None; Path=/`, `userId=${data.userId}; Expires=${expires}; Secure; HttpOnly; SameSite=None; Path=/`, ]);
+            
   
   response.status(data.status).json(data.success ? { success: true, userId: data.userId, idsrv: data.idsrv } : { success: false, error: data.error });
 } 

@@ -60,29 +60,17 @@ const Login: NextPage = () => {
           <Button fullWidth mt="xl" onClick={async () => {
             setLoading(true);
             setError('');
-
-            let expires: any = new Date()
-            // @ts-ignore
-            expires.setYear(expires.getFullYear() + 1)
-            expires = expires.getTime()
-                  
-            // @ts-ignore
-            cookieStore.set({
-              name: 'username',
-              value: username,
-              expires,
-              sameSite: 'none'
-            });
-            // @ts-ignore
-            cookieStore.set({
-              name: 'password',
-              value: password,
-              expires,
-              sameSite: 'none'
-            });
       
             const response = await fetch('/api/login', { 
-              credentials: 'include'
+              method: 'POST',
+              body: JSON.stringify({
+                username,
+                password
+              }),
+              headers: {
+                'content-type': 'application/json',
+              },
+              credentials: 'include',
             });
 
             const data = await response.json();
@@ -93,23 +81,6 @@ const Login: NextPage = () => {
               return;
             }
 
-            // @ts-ignore
-            cookieStore.set({
-              name: 'idsrv',
-              value: data.idsrv,
-              expires,
-              sameSite: 'none'
-            });
-            // @ts-ignore
-            cookieStore.set({
-              name: 'userId',
-              value: data.userId,
-              expires,
-              sameSite: 'none'
-            });
-      
-            setLoading(false);
-      
             router.push('/')
           }}>
             Log In
