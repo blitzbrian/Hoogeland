@@ -21,7 +21,7 @@ const Title: React.FC<Props> = ({ subject, Break, done }) => {
             {subject?.LesuurVan}
           </Badge>
         )}
-        {subject ? subject.Omschrijving.split('-').splice(0, 2).join('-') + (subject.Lokatie ? ('- ' + subject.Lokatie) : '') : ''}
+        {subject ? subject.Omschrijving.split('-').splice(0, 2).join('-').trim() + ' ' + (subject.Lokatie ? ('- ' + subject.Lokatie) : '') : ''}
         
         {subject?.type && (
           <Badge

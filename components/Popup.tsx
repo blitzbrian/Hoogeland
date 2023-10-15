@@ -116,16 +116,16 @@ const Popup: React.FC<Props> = ({ setDays }) => {
                   </tr>
                 </>
               )}
-              {subject?.Vakken && (
+              {subject?.Vakken[0]?.Naam && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
                     <th>Vak</th>
-                    <td>{subject?.Vakken[0].Naam}</td>
+                    <td>{subject?.Vakken[0]?.Naam}</td>
                   </tr>
                 </>
               )}
-              {subject?.Docenten && (
+              {subject?.Docenten.length !== 0 && (
                 <>
                   <Divider variant="dotted" sx={{ width: '200%' }} />
                   <tr>
