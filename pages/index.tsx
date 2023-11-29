@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
 import dynamic from "next/dynamic"
-import Image from "next/image"
 import { Header } from '@mantine/core'
 import Days from '../components/Days'
 import Datepicker from '../components/Datepicker'
@@ -18,8 +17,6 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ data }) => {
-  const router = useRouter()
-
   let [days, setDays] = useState(data);
 
   return (

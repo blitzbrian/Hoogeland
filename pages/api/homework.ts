@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { getDays } from './days'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(!req.cookies.userId || !req.cookies.token || !req.body) {
@@ -19,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   subject.type = undefined;
   subject.stroom = undefined;
   
-  const response = await fetch(`https://isw.magister.net/api/personen/${req.cookies.userId}/afspraken/${subject.Id}`, {
+  await fetch(`https://isw.magister.net/api/personen/${req.cookies.userId}/afspraken/${subject.Id}`, {
   "headers": {
     "accept": "application/json, text/plain, */*",
     "accept-language": "nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
@@ -39,10 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   "mode": "cors",
   });
 
-  const data = await response.json();
+  const days = await getDays(req.cookies.idsrv, req.cookies.userId, req.cookies.token);
 
-  res.status(200).json({ 
-    ...data,
-    success: !data.meldingen
-  });
+  res.status(days.status).json(days.days);
 }

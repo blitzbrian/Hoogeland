@@ -26,7 +26,7 @@ const Popup: React.FC<Props> = ({ setDays }) => {
   const onCheck = async (e: any) => {
     setChecked(e?.currentTarget?.checked);
     
-    await fetch('/api/homework', {
+    const res = await fetch('/api/homework', {
       body: JSON.stringify({
         // @ts-ignore
         ...subject,
@@ -38,20 +38,11 @@ const Popup: React.FC<Props> = ({ setDays }) => {
         'content-type': 'application/json'
       },
       credentials: 'include'
-    });  
-
-    const res = await fetch('/api/days', {
-      method: 'GET',
-      headers: {
-        'content-type': 'application/json',
-        'token': 'true'
-      },
-      credentials: 'include'
     });
 
     const data = await res.json()
     
-    if(data.success !== false) setDays(data);
+    if(res.status === 200) setDays(data);
     
   }
   
