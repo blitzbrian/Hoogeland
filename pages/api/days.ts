@@ -165,7 +165,7 @@ export async function getDays(idsrv: any, userId: any, oldToken?: any, date?: an
       if (
         location == 7 ||
         location == 8 ||
-        subject.Vakken[0].Naam == 'Lichamelijke opvoeding' ||
+        subject.Vakken[0]?.Naam == 'Lichamelijke opvoeding' ||
         (location >= 104 && location <= 127) ||
         (location >= 228 && location <= 258) ||
         (location >= 71 && location <= 88)
