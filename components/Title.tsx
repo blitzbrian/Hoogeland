@@ -1,47 +1,54 @@
-import { Badge } from '@mantine/core';
+import { Badge } from "@mantine/core";
 
 interface Props {
-  subject: any;
-  Break: boolean;
-  done: boolean;
+    subject: any;
+    Break: boolean;
+    done: boolean;
 }
 
 const Title: React.FC<Props> = ({ subject, Break, done }) => {
-  if (Break === false)
-    return (
-      <>
-        {subject?.LesuurVan && (
-          <Badge
-            sx={{ marginRight: '5px', cursor: 'pointer' }}
-            color="teal"
-            radius="md"
-            size="sm"
-            variant="filled"
-          >
-            {subject?.LesuurVan}
-          </Badge>
-        )}
-        {subject ? subject.Omschrijving.split('-').splice(0, 2).join('-').trim() + ' ' + (subject.Lokatie ? ('- ' + subject.Lokatie) : '') : ''}
-        
-        {subject?.type && (
-          <Badge
-            sx={{ marginLeft: '5px', cursor: 'pointer' }}
-            radius="md"
-            variant="filled"
-            color={done ? "teal" : undefined}
-          >
-            {subject.type}
-          </Badge>
-        )}
-      </>
-    );
-  else
-    return (
-      <>
-        {subject?.break && <>Kleine pauze</>}
-        {subject?.bigBreak && <>Grote pauze</>}
-      </>
-    );
+    if (Break === false)
+        return (
+            <>
+                {subject?.LesuurVan && (
+                    <Badge
+                        style={{ marginRight: "5px", cursor: "pointer" }}
+                        color="teal"
+                        radius="md"
+                        size="sm"
+                        variant="filled"
+                    >
+                        {subject?.LesuurVan}
+                    </Badge>
+                )}
+                {subject
+                    ? subject.Omschrijving.split("-")
+                          .splice(0, 2)
+                          .join("-")
+                          .trim() +
+                      " " +
+                      (subject.Lokatie ? "- " + subject.Lokatie : "")
+                    : ""}
+
+                {subject?.type && (
+                    <Badge
+                        style={{ marginLeft: "5px", cursor: "pointer" }}
+                        radius="md"
+                        variant="filled"
+                        color={done ? "teal" : undefined}
+                    >
+                        {subject.type}
+                    </Badge>
+                )}
+            </>
+        );
+    else
+        return (
+            <>
+                {subject?.break && <>Kleine pauze</>}
+                {subject?.bigBreak && <>Grote pauze</>}
+            </>
+        );
 };
 
 export default Title;
