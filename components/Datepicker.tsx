@@ -76,7 +76,8 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
                 opened={opened}
                 onClose={close}
                 withCloseButton={false}
-                transitionProps={{ transition: "slide-down", duration: 300 }}
+                transitionProps={{ transition: "pop", duration: 300 }}
+                centered={true}
             >
                 <Group position="center">
                     <DatePicker

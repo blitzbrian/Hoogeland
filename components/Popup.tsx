@@ -60,161 +60,127 @@ const Popup: React.FC<Props> = ({ setDays }) => {
         <Modal
             opened={opened}
             onClose={() => setOpen(false)}
-            withCloseButton={false}
             title={<Title subject={subject} Break={Break} done={checked} />}
+            xOffset={0}
+            yOffset={60}
+            size="100vw"
+            withOverlay={false}
             styles={{
                 title: {
                     cursor: "default",
                 },
+                content: {
+                    height: "100vh"
+                }
             }}
-            transitionProps={{ transition: "slide-down", duration: 300 }}
+            shadow="0px"
+            transitionProps={{ transition: "pop", duration: 300 }}
         >
-            <table
-                style={{
-                    textAlign: "left",
-                    tableLayout: "fixed",
-                    cursor: "default",
-                    width: "100%",
-                }}
-            >
-                <tbody>
-                    {Break === false && (
+            {Break === false && (
+                <>
+                    {subject?.Start && (
                         <>
-                            {subject?.Start && (
-                                <>
-                                    <Divider
-                                        variant="dotted"
-                                        style={{ width: "200%" }}
-                                    />
-                                    <tr>
-                                        <th>Begin</th>
-                                        <td>
-                                            {new Date(
-                                                subject?.Start
-                                            ).toLocaleTimeString("nl-NL", {
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })}
-                                        </td>
-                                    </tr>
-                                </>
-                            )}
-                            {subject?.Einde && (
-                                <>
-                                    <Divider
-                                        variant="dotted"
-                                        style={{ width: "200%" }}
-                                    />
-                                    <tr>
-                                        <th>Eind</th>
-                                        <td>
-                                            {new Date(
-                                                subject?.Einde
-                                            ).toLocaleTimeString("nl-NL", {
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })}
-                                        </td>
-                                    </tr>
-                                </>
-                            )}
-                            {subject?.Lokatie && (
-                                <>
-                                    <Divider
-                                        variant="dotted"
-                                        style={{ width: "200%" }}
-                                    />
-                                    <tr>
-                                        <th>Locatie</th>
-                                        <td>{subject?.Lokatie}</td>
-                                    </tr>
-                                </>
-                            )}
-                            {subject?.Vakken[0]?.Naam && (
-                                <>
-                                    <Divider
-                                        variant="dotted"
-                                        style={{ width: "200%" }}
-                                    />
-                                    <tr>
-                                        <th>Vak</th>
-                                        <td>{subject?.Vakken[0]?.Naam}</td>
-                                    </tr>
-                                </>
-                            )}
-                            {subject?.Docenten.length !== 0 && (
-                                <>
-                                    <Divider
-                                        variant="dotted"
-                                        style={{ width: "200%" }}
-                                    />
-                                    <tr>
-                                        <th>Docent</th>
-                                        <td>
-                                            {subject?.Docenten?.map(
-                                                (docent: any, i: number) => {
-                                                    if (i === 0) {
-                                                        return docent.Naam;
-                                                    } else {
-                                                        return (
-                                                            ", " + docent.Naam
-                                                        );
-                                                    }
-                                                }
-                                            )}
-                                        </td>
-                                    </tr>
-                                </>
+                            <Divider
+                                component="p" variant="dotted" mt={0}
+                            />
+                            <b>Begin</b>
+                            <br />
+                            {new Date(subject?.Start).toLocaleTimeString(
+                                "nl-NL",
+                                {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                }
                             )}
                         </>
                     )}
-                    {Break === true && (
+                    {subject?.Einde && (
                         <>
                             <Divider
-                                variant="dotted"
-                                style={{ width: "200%" }}
+                                component="p" variant="dotted"
                             />
-                            <tr>
-                                <th>Stroom</th>
-                                <td>{subject.stroom}</td>
-                            </tr>
-                            <Divider
-                                variant="dotted"
-                                style={{ width: "200%" }}
-                            />
-                            <tr>
-                                <th>Begin</th>
-                                <td>
-                                    {new Date(
-                                        subject?.breakStart || 0
-                                    ).toLocaleTimeString("nl-NL", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    })}
-                                </td>
-                            </tr>
-                            <Divider
-                                variant="dotted"
-                                style={{ width: "200%" }}
-                            />
-                            <tr>
-                                <th>Eind</th>
-                                <td>
-                                    {new Date(
-                                        subject?.breakEnd || 0
-                                    ).toLocaleTimeString("nl-NL", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                    })}
-                                </td>
-                            </tr>
+                            <b>Eind</b>
+                            <br />
+                            {new Date(subject?.Einde).toLocaleTimeString(
+                                "nl-NL",
+                                {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                }
+                            )}
                         </>
                     )}
-                </tbody>
-            </table>
+                    {subject?.Lokatie && (
+                        <>
+                            <Divider
+                                component="p" variant="dotted"
+                            />
+                            <b>Locatie</b>
+                            <br />
+                            {subject?.Lokatie}
+                        </>
+                    )}
+                    {subject?.Vakken[0]?.Naam && (
+                        <>
+                            <Divider
+                                component="p" variant="dotted"
+                            />
+                            <b>Vak</b>
+                            <br />
+                            {subject?.Vakken[0]?.Naam}
+                        </>
+                    )}
+                    {subject?.Docenten.length !== 0 && (
+                        <>
+                            <Divider
+                                component="p" variant="dotted"
+                            />
+                            <b>Docent</b>
+                            <br />
+                            {subject?.Docenten?.map(
+                                (docent: any, i: number) => {
+                                    if (i === 0) {
+                                        return docent.Naam;
+                                    } else {
+                                        return ", " + docent.Naam;
+                                    }
+                                }
+                            )}
+                        </>
+                    )}
+                </>
+            )}
+            {Break === true && (
+                <>
+                    <Divider component="p" variant="dotted" />
+                    <b>Stroom</b>
+                    <br />
+                    {subject.stroom}
+                    <Divider component="p" variant="dotted" />
+                    <b>Begin</b>
+                    <br />
+                    {new Date(subject?.breakStart || 0).toLocaleTimeString(
+                        "nl-NL",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        }
+                    )}
+                    <Divider component="p" variant="dotted" />
+                    <b>Eind</b>
+                    <br />
+                    {new Date(subject?.breakEnd || 0).toLocaleTimeString(
+                        "nl-NL",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                        }
+                    )}
+                </>
+            )}
             {subject?.Inhoud && Break === false && (
                 <>
-                    <Divider variant="dotted" style={{ width: "100%" }} />
+                    <Divider component="p" variant="dotted" style={{ width: "100%" }} />
                     <div
                         style={{
                             display: "flex",
