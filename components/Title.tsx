@@ -12,13 +12,26 @@ const Title: React.FC<Props> = ({ subject, Break, done }) => {
             <>
                 {subject?.LesuurVan && (
                     <Badge
-                        style={{ marginRight: "5px", cursor: "pointer" }}
+                        style={{ cursor: "pointer" }}
+                        mr="5px"
                         color="teal"
                         radius="md"
                         size="sm"
                         variant="filled"
                     >
                         {subject?.LesuurVan}
+                    </Badge>
+                )}
+                {!subject.LesuurVan && (
+                    <Badge
+                        style={{ cursor: "pointer" }}
+                        mr="5px"
+                        color="teal"
+                        radius="md"
+                        size="sm"
+                        variant="filled"
+                    >
+                        {new Date(subject?.Start).toLocaleTimeString("NL-nl", { hour: "numeric", minute: "numeric" }) + "-" + new Date(subject?.Einde).toLocaleTimeString("NL-nl", { hour: "numeric", minute: "numeric" })}
                     </Badge>
                 )}
                 {subject
@@ -32,7 +45,8 @@ const Title: React.FC<Props> = ({ subject, Break, done }) => {
 
                 {subject?.type && (
                     <Badge
-                        style={{ marginLeft: "5px", cursor: "pointer" }}
+                        style={{ cursor: "pointer" }}
+                        ml="5px"
                         radius="md"
                         variant="filled"
                         color={done ? "teal" : undefined}

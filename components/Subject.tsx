@@ -19,6 +19,8 @@ const Subject: React.FC<Props> = ({ subject }) => {
                     }}
                     withBorder
                     onClick={() => open(subject, true)}
+                    onKeyDown={(e) => { if(e.code === "Enter") open(subject, true) }}
+                    tabIndex={0}
                 >
                     <Title subject={subject} Break={true} done={false} />
                 </Paper>
@@ -28,10 +30,12 @@ const Subject: React.FC<Props> = ({ subject }) => {
                 p="xs"
                 radius={0}
                 style={{
-                    cursor: "pointer",
+                    cursor: "pointer"
                 }}
                 withBorder
                 onClick={() => open(subject, false)}
+                onKeyDown={(e) => { if(e.code === "Enter") open(subject, false) }}
+                tabIndex={0}
             >
                 <Title
                     subject={subject}

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { AppShell } from "@mantine/core";
+import { AppShell, Burger } from "@mantine/core";
 import Days from "../components/Days";
 import Datepicker from "../components/Datepicker";
 import Logo from "../components/svg/Logo";
@@ -10,13 +10,23 @@ import { getDays } from "./api/days";
 import { login } from "./api/login";
 
 const Popup = dynamic(() => import("../components/Popup"));
+const NavBar = dynamic(() => import("../components/NavBar"));
 
 interface Props {
     data: any;
 }
 
 const Home: NextPage<Props> = ({ data }) => {
-    let [days, setDays] = useState(data);
+    const [days, setDays] = useState(data);
+    const [navOpened, setNavOpen] = useState(false);
+    const [opened, setOpen] = useState(false);
+
+    const switchOpen = () => {
+        if(opened || navOpened) {
+            setOpen(false);
+            setNavOpen(false);
+        } else setNavOpen(true);
+    }
 
     return (
         <>
@@ -26,17 +36,19 @@ const Home: NextPage<Props> = ({ data }) => {
             <AppShell header={{ height: 60 }}>
                 <AppShell.Header
                     style={{
-                        display: "flex",
                         alignItems: "center",
                     }}
                     p="xs"
+                    display="flex"
                 >
-                    <Logo />
                     <Datepicker setData={setDays} />
+                    <Logo />
+                    <Burger ml="auto" opened={opened || navOpened} onClick={switchOpen} />
                 </AppShell.Header>
-                <AppShell.Main style={{ marginLeft: 0, marginRight: 0 }}>
+                <AppShell.Main mx={0}>
                     {days && days.success !== false && <Days days={days} />}
-                    <Popup setDays={setDays} />
+                    <Popup setDays={setDays} opened={opened} setOpen={setOpen}/>
+                    <NavBar setNavOpen={setNavOpen} navOpened={navOpened} />
                 </AppShell.Main>
             </AppShell>
         </>

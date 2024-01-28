@@ -66,8 +66,8 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
         <>
             <ActionIcon
                 variant="transparent"
-                style={{ marginLeft: "auto" }}
                 onClick={open}
+                mr="auto"
             >
                 <Calendar />
             </ActionIcon>

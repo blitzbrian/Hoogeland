@@ -15,7 +15,8 @@ let opened: boolean,
     Break: any,
     setBreak: (Break: any) => void,
     checked: any,
-    setChecked: (checked: any) => void;
+    setChecked: (checked: any) => void,
+    setBurgerOpen: (burgerOpen: boolean) => void;
 
 const open = (subject: any, Break: boolean) => {
     setBreak(Break);
@@ -26,10 +27,14 @@ const open = (subject: any, Break: boolean) => {
 
 interface Props {
     setDays: (days: any) => void;
+    setOpen: (opened: boolean) => void;
+    opened: boolean;
 }
 
-const Popup: React.FC<Props> = ({ setDays }) => {
-    [opened, setOpen] = useState(false);
+const Popup: React.FC<Props> = (props) => {
+    const setDays = props.setDays;
+    setOpen = props.setOpen;
+    opened = props.opened;
     [subject, setSubject] = useState();
     [Break, setBreak] = useState();
     [checked, setChecked] = useState(false);
@@ -65,6 +70,7 @@ const Popup: React.FC<Props> = ({ setDays }) => {
             yOffset={60}
             size="100vw"
             withOverlay={false}
+            withCloseButton={false}
             styles={{
                 title: {
                     cursor: "default",
@@ -152,7 +158,7 @@ const Popup: React.FC<Props> = ({ setDays }) => {
             )}
             {Break === true && (
                 <>
-                    <Divider component="p" variant="dotted" />
+                    <Divider component="p" variant="dotted" mt={0} />
                     <b>Stroom</b>
                     <br />
                     {subject.stroom}
@@ -180,7 +186,7 @@ const Popup: React.FC<Props> = ({ setDays }) => {
             )}
             {subject?.Inhoud && Break === false && (
                 <>
-                    <Divider component="p" variant="dotted" style={{ width: "100%" }} />
+                    <Divider component="p" variant="dotted" w="100%" />
                     <div
                         style={{
                             display: "flex",
@@ -197,15 +203,17 @@ const Popup: React.FC<Props> = ({ setDays }) => {
                             Huiswerk{" "}
                         </strong>
                         <Switch
-                            style={{
-                                display: "inline-block",
-                                marginLeft: "auto",
-                            }}
+                            display="inline-block"
+                            ml="auto"
+                            styles={{ track: {
+                                outline: 'none',
+                                border: '0px'
+                            }}}
                             checked={checked}
                             onChange={onCheck}
                         />
                     </div>
-                    <TypographyStylesProvider style={{ margin: 0, padding: 0 }}>
+                    <TypographyStylesProvider m={0} p={0}>
                         <p
                             style={{
                                 marginTop: 0,

@@ -20,15 +20,6 @@ const generateLabel = (time: number) => {
     return day.charAt(0).toUpperCase() + day.slice(1);
 };
 
-// const getDefaultItem = (day) => {
-//   const date = new Date(day.day);
-//   const today = new Date();
-//   return (
-//     date.toDateString() == today.toDateString() ||
-//     ((today.getDay() == 6 || today.getDay() == 0) && date.getDay() == 1)
-//   );
-// };
-
 const Days: React.FC<Props> = (props) => {
     return (
         <Accordion
@@ -39,7 +30,7 @@ const Days: React.FC<Props> = (props) => {
                 },
             }}
             transitionDuration={300}
-            defaultValue={new Date().toDateString()}
+            defaultValue={new Date(props.days[0]?.day).toDateString()}
         >
             {props.days?.map((day: any) => (
                 <Accordion.Item

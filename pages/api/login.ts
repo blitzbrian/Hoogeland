@@ -354,8 +354,6 @@ export default async function handler(
 
     const password = request.body?.password || request.cookies.password;
 
-    console.log(username, password);
-
     if (!username || !password) {
         response
             .status(400)
