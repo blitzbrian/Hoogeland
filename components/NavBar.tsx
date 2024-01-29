@@ -1,6 +1,9 @@
 import { Burger, Drawer, NavLink } from "@mantine/core";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Calendar from "./svg/Calendar";
+import Gear from "./svg/Gear";
+import Grades from "./svg/Grades";
 
 interface Props {
     setNavOpen: (navOpen: any) => void;
@@ -11,8 +14,8 @@ const NavBar: React.FC<Props> = ({ navOpened, setNavOpen }) => {
     const router = useRouter();
 
     const renderLink = (props: any) => {
-        return <Link shallow={true} prefetch={false} {...props} />
-    }
+        return <Link prefetch={false} {...props} />;
+    };
 
     return (
         <Drawer
@@ -21,26 +24,37 @@ const NavBar: React.FC<Props> = ({ navOpened, setNavOpen }) => {
             position="right"
             closeButtonProps={{
                 icon: (
-                    <Burger
-                        opened={true}
-                        onClick={() => setNavOpen(false)}
-                    />
+                    <Burger opened={navOpened} onClick={() => setNavOpen(false)} />
                 ),
             }}
             transitionProps={{ transition: "fade", duration: 300 }}
-            title={<b>Navigatie</b>}
+            title={
+                <b>Navigatie</b>
+            }
         >
             <NavLink
                 href="/"
                 label="Agenda"
                 renderRoot={renderLink}
                 active={router.pathname === "/"}
+                leftSection={<Calendar size="15px" />}
+                onClick={() => setNavOpen(false)}
+            />
+            <NavLink
+                href="/grades"
+                label="Cijfers"
+                renderRoot={renderLink}
+                active={router.pathname === "/grades"}
+                leftSection={<Grades />}
+                onClick={() => setNavOpen(false)}
             />
             <NavLink
                 href="/settings"
                 label="Instellingen"
                 renderRoot={renderLink}
                 active={router.pathname === "/settings"}
+                leftSection={<Gear />}
+                onClick={() => setNavOpen(false)}
             />
         </Drawer>
     );

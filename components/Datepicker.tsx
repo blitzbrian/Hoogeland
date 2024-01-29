@@ -1,3 +1,5 @@
+import "@mantine/dates/styles.css";
+
 // @ts-nocheck
 import { useState } from "react";
 import { ActionIcon } from "@mantine/core";
@@ -10,25 +12,22 @@ const DatePicker = dynamic(() =>
 const Modal = dynamic(() =>
     import("@mantine/core").then((module) => module.Modal)
 );
-const Group = dynamic(() =>
-    import("@mantine/core").then((module) => module.Group)
-);
 
 interface Props {
     setData: (data: any) => void;
 }
 
-const dayRenderer = (date) => {
+const dayRenderer = (date: any) => {
     const currentDay = date.toDateString() === new Date().toDateString();
 
     return (
-            <div
-                style={{
-                    color: currentDay ? "cyan" : "white",
-                }}
-            >
-                {date.getDate()}
-            </div>
+        <div
+            style={{
+                color: currentDay ? "cyan" : "white",
+            }}
+        >
+            {date.getDate()}
+        </div>
     );
 };
 
@@ -64,12 +63,8 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
     };
     return (
         <>
-            <ActionIcon
-                variant="transparent"
-                onClick={open}
-                mr="auto"
-            >
-                <Calendar />
+            <ActionIcon variant="transparent" onClick={open} mr="auto">
+                <Calendar size="23px" />
             </ActionIcon>
             <Modal
                 size="auto"
@@ -79,13 +74,12 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
                 transitionProps={{ transition: "pop", duration: 300 }}
                 centered={true}
             >
-                <Group position="center">
-                    <DatePicker
-                        value={date}
-                        onChange={setDate}
-                        renderDay={dayRenderer}
-                    />
-                </Group>
+                <DatePicker
+                    value={date}
+                    // @ts-ignore
+                    onChange={setDate}
+                    renderDay={dayRenderer}
+                />
             </Modal>
         </>
     );

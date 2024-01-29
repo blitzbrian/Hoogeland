@@ -1,10 +1,8 @@
-import '@mantine/core/styles.css';
-import '@mantine/dates/styles.css';
+import "@mantine/core/styles.css";
 
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { MantineProvider } from '@mantine/core';
-
+import { MantineProvider } from "@mantine/core";
 
 import "./global.css";
 
@@ -97,7 +95,7 @@ export default function App(props: AppProps) {
                 />
             </Head>
 
-            <MantineProvider defaultColorScheme='dark'>
+            <MantineProvider defaultColorScheme="dark">
                 <Component {...pageProps} />
             </MantineProvider>
         </>

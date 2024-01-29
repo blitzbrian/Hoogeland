@@ -1,15 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useMantineColorScheme, Switch, AppShell, Burger } from "@mantine/core";
+import { useMantineColorScheme, Switch, AppShell, Button } from "@mantine/core";
 import { useState } from "react";
-import Logo from "../components/svg/Logo";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import Header from "../components/Header";
 
 const NavBar = dynamic(() => import("../components/NavBar"));
 
 const Settings: NextPage = () => {
     const { colorScheme, setColorScheme } = useMantineColorScheme();
     const [navOpened, setNavOpen] = useState(false);
+    const router = useRouter();
 
     return (
         <>
@@ -17,23 +19,51 @@ const Settings: NextPage = () => {
                 <title>Hoogeland: Instellingen</title>
             </Head>
             <AppShell header={{ height: 60 }}>
-                <AppShell.Header
-                    style={{
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}
-                    display="flex"
-                    p="xs"
-                >
-                    {/* <Datepicker setData={setDays} /> */}
-                    <div style={{ marginRight: "auto" }}/>
-                    <Logo/>
-                    <Burger ml="auto" opened={navOpened} onClick={() => setNavOpen(true)} />
-                </AppShell.Header>
+                <Header
+                    onClose={() => setNavOpen(false)}
+                    navOpened={navOpened}
+                    setNavOpen={setNavOpen}
+                />
                 <AppShell.Main mx={0}>
                     <NavBar setNavOpen={setNavOpen} navOpened={navOpened} />
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-                        Donker Thema: <Switch ml="5px" checked={colorScheme === 'dark'} onChange={(event) => setColorScheme(event.currentTarget.checked === true ? 'dark' : 'light')}/>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            marginTop: "20px",
+                            flexDirection: "column",
+                        }}
+                    >
+                        <div
+                            style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                            }}
+                        >
+                            Donker Thema:{" "}
+                            <Switch
+                                ml="5px"
+                                checked={colorScheme === "dark"}
+                                onChange={(event) =>
+                                    setColorScheme(
+                                        event.currentTarget.checked === true
+                                            ? "dark"
+                                            : "light"
+                                    )
+                                }
+                            />
+                        </div>
+                        {/* @ts-ignore */}
+                        <Button
+                            color="red"
+                            mt="20px"
+                            onClick={() => {
+                                router.push("/login");
+                            }}
+                        >
+                            Log Uit
+                        </Button>
                     </div>
                 </AppShell.Main>
             </AppShell>

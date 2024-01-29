@@ -265,7 +265,7 @@ export default async function handler(
         return;
     }
 
-    let data = await getDays(
+    const data = await getDays(
         body.idsrv,
         body.userId,
         req.headers.token ? body.token : undefined,

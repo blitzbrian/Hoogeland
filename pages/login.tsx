@@ -32,9 +32,9 @@ const Login: NextPage = () => {
                 </Head>
                 <Title
                     style={{
-                        fontFamily: 'Greycliff CF, var(--mantine-font-family)',
+                        fontFamily: "Greycliff CF, var(--mantine-font-family)",
                         fontWeight: 900,
-                        textAlign: 'center'
+                        textAlign: "center",
                     }}
                 >
                     Login

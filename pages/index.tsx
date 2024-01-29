@@ -8,6 +8,7 @@ import Datepicker from "../components/Datepicker";
 import Logo from "../components/svg/Logo";
 import { getDays } from "./api/days";
 import { login } from "./api/login";
+import Header from "../components/Header";
 
 const Popup = dynamic(() => import("../components/Popup"));
 const NavBar = dynamic(() => import("../components/NavBar"));
@@ -21,12 +22,12 @@ const Home: NextPage<Props> = ({ data }) => {
     const [navOpened, setNavOpen] = useState(false);
     const [opened, setOpen] = useState(false);
 
-    const switchOpen = () => {
-        if(opened || navOpened) {
+    const close = () => {
+        if (opened || navOpened) {
             setOpen(false);
             setNavOpen(false);
         } else setNavOpen(true);
-    }
+    };
 
     return (
         <>
@@ -34,20 +35,19 @@ const Home: NextPage<Props> = ({ data }) => {
                 <title>Hoogeland: Home</title>
             </Head>
             <AppShell header={{ height: 60 }}>
-                <AppShell.Header
-                    style={{
-                        alignItems: "center",
-                    }}
-                    p="xs"
-                    display="flex"
-                >
-                    <Datepicker setData={setDays} />
-                    <Logo />
-                    <Burger ml="auto" opened={opened || navOpened} onClick={switchOpen} />
-                </AppShell.Header>
+                <Header
+                    setNavOpen={setNavOpen}
+                    onClose={close}
+                    navOpened={navOpened || opened}
+                    Button={<Datepicker setData={setDays} />}
+                />
                 <AppShell.Main mx={0}>
                     {days && days.success !== false && <Days days={days} />}
-                    <Popup setDays={setDays} opened={opened} setOpen={setOpen}/>
+                    <Popup
+                        setDays={setDays}
+                        opened={opened}
+                        setOpen={setOpen}
+                    />
                     <NavBar setNavOpen={setNavOpen} navOpened={navOpened} />
                 </AppShell.Main>
             </AppShell>

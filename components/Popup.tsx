@@ -76,8 +76,8 @@ const Popup: React.FC<Props> = (props) => {
                     cursor: "default",
                 },
                 content: {
-                    height: "100vh"
-                }
+                    height: "100vh",
+                },
             }}
             shadow="0px"
             transitionProps={{ transition: "pop", duration: 300 }}
@@ -86,9 +86,7 @@ const Popup: React.FC<Props> = (props) => {
                 <>
                     {subject?.Start && (
                         <>
-                            <Divider
-                                component="p" variant="dotted" mt={0}
-                            />
+                            <Divider component="p" variant="dotted" mt={0} />
                             <b>Begin</b>
                             <br />
                             {new Date(subject?.Start).toLocaleTimeString(
@@ -102,9 +100,7 @@ const Popup: React.FC<Props> = (props) => {
                     )}
                     {subject?.Einde && (
                         <>
-                            <Divider
-                                component="p" variant="dotted"
-                            />
+                            <Divider component="p" variant="dotted" />
                             <b>Eind</b>
                             <br />
                             {new Date(subject?.Einde).toLocaleTimeString(
@@ -118,9 +114,7 @@ const Popup: React.FC<Props> = (props) => {
                     )}
                     {subject?.Lokatie && (
                         <>
-                            <Divider
-                                component="p" variant="dotted"
-                            />
+                            <Divider component="p" variant="dotted" />
                             <b>Locatie</b>
                             <br />
                             {subject?.Lokatie}
@@ -128,9 +122,7 @@ const Popup: React.FC<Props> = (props) => {
                     )}
                     {subject?.Vakken[0]?.Naam && (
                         <>
-                            <Divider
-                                component="p" variant="dotted"
-                            />
+                            <Divider component="p" variant="dotted" />
                             <b>Vak</b>
                             <br />
                             {subject?.Vakken[0]?.Naam}
@@ -138,9 +130,7 @@ const Popup: React.FC<Props> = (props) => {
                     )}
                     {subject?.Docenten.length !== 0 && (
                         <>
-                            <Divider
-                                component="p" variant="dotted"
-                            />
+                            <Divider component="p" variant="dotted" />
                             <b>Docent</b>
                             <br />
                             {subject?.Docenten?.map(
@@ -205,10 +195,12 @@ const Popup: React.FC<Props> = (props) => {
                         <Switch
                             display="inline-block"
                             ml="auto"
-                            styles={{ track: {
-                                outline: 'none',
-                                border: '0px'
-                            }}}
+                            styles={{
+                                track: {
+                                    outline: "none",
+                                    border: "0px",
+                                },
+                            }}
                             checked={checked}
                             onChange={onCheck}
                         />

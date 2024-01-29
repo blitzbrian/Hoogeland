@@ -26,12 +26,20 @@ const Title: React.FC<Props> = ({ subject, Break, done }) => {
                     <Badge
                         style={{ cursor: "pointer" }}
                         mr="5px"
-                        color="teal"
+                        color="blue"
                         radius="md"
                         size="sm"
                         variant="filled"
                     >
-                        {new Date(subject?.Start).toLocaleTimeString("NL-nl", { hour: "numeric", minute: "numeric" }) + "-" + new Date(subject?.Einde).toLocaleTimeString("NL-nl", { hour: "numeric", minute: "numeric" })}
+                        {new Date(subject?.Start).toLocaleTimeString("NL-nl", {
+                            hour: "numeric",
+                            minute: "numeric",
+                        }) +
+                            "-" +
+                            new Date(subject?.Einde).toLocaleTimeString(
+                                "NL-nl",
+                                { hour: "numeric", minute: "numeric" }
+                            )}
                     </Badge>
                 )}
                 {subject
@@ -48,8 +56,8 @@ const Title: React.FC<Props> = ({ subject, Break, done }) => {
                         style={{ cursor: "pointer" }}
                         ml="5px"
                         radius="md"
-                        variant="filled"
-                        color={done ? "teal" : undefined}
+                        variant="light"
+                        color={done ? "teal" : "blue"}
                     >
                         {subject.type}
                     </Badge>

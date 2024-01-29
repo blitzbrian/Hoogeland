@@ -1,5 +1,4 @@
 // @ts-ignore
-import { v4 as uuidv4 } from "uuid";
 import { Accordion } from "@mantine/core";
 import Subject from "./Subject";
 
@@ -34,7 +33,7 @@ const Days: React.FC<Props> = (props) => {
         >
             {props.days?.map((day: any) => (
                 <Accordion.Item
-                    key={uuidv4()}
+                    key={day.day}
                     value={new Date(day.day).toDateString()}
                 >
                     <Accordion.Control>
@@ -42,7 +41,7 @@ const Days: React.FC<Props> = (props) => {
                     </Accordion.Control>
                     <Accordion.Panel>
                         {day.subjects.map((subject: any) => (
-                            <Subject key={uuidv4()} subject={subject} />
+                            <Subject key={subject.Id} subject={subject} />
                         ))}
                     </Accordion.Panel>
                 </Accordion.Item>
