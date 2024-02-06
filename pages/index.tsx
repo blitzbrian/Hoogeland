@@ -11,7 +11,7 @@ import { login } from "./api/login";
 import Header from "../components/Header";
 
 const Popup = dynamic(() => import("../components/Popup"));
-const NavBar = dynamic(() => import("../components/NavBar"));
+const Nav = dynamic(() => import("../components/Nav"));
 
 interface Props {
     data: any;
@@ -48,7 +48,7 @@ const Home: NextPage<Props> = ({ data }) => {
                         opened={opened}
                         setOpen={setOpen}
                     />
-                    <NavBar setNavOpen={setNavOpen} navOpened={navOpened} />
+                    <Nav setNavOpen={setNavOpen} navOpened={navOpened} />
                 </AppShell.Main>
             </AppShell>
         </>

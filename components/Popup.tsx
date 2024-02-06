@@ -15,8 +15,7 @@ let opened: boolean,
     Break: any,
     setBreak: (Break: any) => void,
     checked: any,
-    setChecked: (checked: any) => void,
-    setBurgerOpen: (burgerOpen: boolean) => void;
+    setChecked: (checked: any) => void;
 
 const open = (subject: any, Break: boolean) => {
     setBreak(Break);
@@ -67,7 +66,6 @@ const Popup: React.FC<Props> = (props) => {
             onClose={() => setOpen(false)}
             title={<Title subject={subject} Break={Break} done={checked} />}
             xOffset={0}
-            yOffset={60}
             size="100vw"
             withOverlay={false}
             withCloseButton={false}
@@ -76,7 +74,12 @@ const Popup: React.FC<Props> = (props) => {
                     cursor: "default",
                 },
                 content: {
-                    height: "100vh",
+                    height: "100%",
+                    maxHeight: "100%"
+                },
+                inner: {
+                    paddingTop: "60px",
+                    paddingBottom: 0
                 },
             }}
             shadow="0px"

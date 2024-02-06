@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
 
-const NavBar = dynamic(() => import("../components/NavBar"));
+const Nav = dynamic(() => import("../components/Nav"));
 
 const Settings: NextPage = () => {
     const { colorScheme, setColorScheme } = useMantineColorScheme();
@@ -25,7 +25,7 @@ const Settings: NextPage = () => {
                     setNavOpen={setNavOpen}
                 />
                 <AppShell.Main mx={0}>
-                    <NavBar setNavOpen={setNavOpen} navOpened={navOpened} />
+                    <Nav setNavOpen={setNavOpen} navOpened={navOpened} />
                     <div
                         style={{
                             display: "flex",

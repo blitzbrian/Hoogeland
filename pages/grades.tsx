@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import { getGrades } from "./api/grades";
 import { login } from "./api/login";
 
-const NavBar = dynamic(() => import("../components/NavBar"));
+const Nav = dynamic(() => import("../components/Nav"));
 
 interface Props {
     data: any;
@@ -49,7 +49,7 @@ const Grades: NextPage<Props> = ({ data }) => {
                     navOpened={navOpened}
                 />
                 <AppShell.Main>
-                    <NavBar setNavOpen={setNavOpen} navOpened={navOpened} />
+                    <Nav setNavOpen={setNavOpen} navOpened={navOpened} />
                     {Object.keys(subjects).map((subject: any) => (
                         <Paper
                             shadow="xs"

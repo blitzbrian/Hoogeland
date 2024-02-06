@@ -167,17 +167,16 @@ export async function getDays(
 
             const smallBreak = () => {
                 subject.break = true;
-                subject.breakStart =
-                    subjects[i - 1]?.Einde || subject.Start - 900000;
+                subject.breakStart = subject.Start - 900000;
                 subject.breakEnd = subject.Start;
             };
             const bigBreakFn = () => {
                 bigBreak = true;
                 subject.bigBreak = true;
-                subject.breakStart =
-                    subjects[i - 1]?.Einde || subject.Start - 1800000;
+                subject.breakStart = subject.Start - 1800000;
                 subject.breakEnd = subject.Start;
             };
+
             const isMinirooster = () => {
                 const start = new Date(subject.Start);
                 const end = new Date(subject.Einde);
@@ -230,7 +229,7 @@ export async function getDays(
             } else if (hour === 6 && !bigBreak) {
                 // Big Break
                 if (subjects[i - 1]?.Einde === subject.Start)
-                    subjects[i - 1].Einde -= 1800000;
+                    subjects[i - 1].Einde -= 900000;
                 subject.stroom = "2";
                 bigBreakFn();
             } else if (hour === 8 && !smallBreak2 && !minirooster) {
@@ -240,6 +239,11 @@ export async function getDays(
                     subjects[i - 1].Einde -= 900000;
                 subject.stroom = "2";
                 smallBreak();
+            }
+            else if (subjects[i + 1]?.LesuurVan !== hour + 1) {
+                if ((hour === 3 || hour === 7) && !minirooster)
+                    subject.Einde -= 900000;
+                if (hour === 5) subject.Einde -= 900000;
             }
 
             return subject;

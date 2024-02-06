@@ -29,6 +29,7 @@ const Header: React.FC<Props> = ({
                 ml="auto"
                 opened={navOpened}
                 onClick={() => (navOpened ? onClose() : setNavOpen(true))}
+                transitionTimingFunction="linear"
             />
         </AppShell.Header>
     );

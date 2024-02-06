@@ -10,7 +10,7 @@ interface Props {
     navOpened: boolean;
 }
 
-const NavBar: React.FC<Props> = ({ navOpened, setNavOpen }) => {
+const Nav: React.FC<Props> = ({ navOpened, setNavOpen }) => {
     const router = useRouter();
 
     const renderLink = (props: any) => {
@@ -24,13 +24,14 @@ const NavBar: React.FC<Props> = ({ navOpened, setNavOpen }) => {
             position="right"
             closeButtonProps={{
                 icon: (
-                    <Burger opened={navOpened} onClick={() => setNavOpen(false)} />
+                    <Burger opened={navOpened} onClick={() => setNavOpen(false)} transitionTimingFunction="linear"/>
                 ),
             }}
-            transitionProps={{ transition: "fade", duration: 300 }}
+            transitionProps={{ transition: "fade", duration: 300, timingFunction: 'linear' }}
             title={
                 <b>Navigatie</b>
             }
+            keepMounted={true}
         >
             <NavLink
                 href="/"
@@ -60,4 +61,4 @@ const NavBar: React.FC<Props> = ({ navOpened, setNavOpen }) => {
     );
 };
 
-export default NavBar;
+export default Nav;
