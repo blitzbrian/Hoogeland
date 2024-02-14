@@ -112,7 +112,7 @@ export async function login<Input>(username, password) {
 
     // Hardcoded value in the api, it changes sometimes and then the api rejects all requests
 
-    const authCode = "290e50290e50";
+    const authCode = "276768";
 
     res = await fetch(
         "https://accounts.magister.net" + res.headers.get("location"),
