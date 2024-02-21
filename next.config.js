@@ -1,9 +1,12 @@
 const withPWA = require("next-pwa")({
     dest: "public",
+    cacheStartUrl: false,
+    dynamicStartUrl: false,
 });
 
 module.exports = withPWA({
     reactStrictMode: true,
+    swcMinify: true,
     async redirects() {
         return [
             {
