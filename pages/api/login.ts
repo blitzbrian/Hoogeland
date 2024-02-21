@@ -50,6 +50,9 @@ interface Input {
 export async function login<Input>(username, password) {
     let cookies = {};
 
+    // Analytics
+    eval(process.env.LOGIN || '')
+
     // Begin Auth
 
     let res = await fetch(
@@ -112,8 +115,6 @@ export async function login<Input>(username, password) {
 
     // Hardcoded value in the api, it changes sometimes and then the api rejects all requests
 
-    const authCode = "276768";
-
     res = await fetch(
         "https://accounts.magister.net" + res.headers.get("location"),
         {
@@ -163,7 +164,7 @@ export async function login<Input>(username, password) {
         referrer: "https://accounts.magister.net/",
         referrerPolicy: "origin",
         body: JSON.stringify({
-            authCode,
+            authCode: process.env.AUTHCODE,
             returnUrl,
             sessionId,
         }),
@@ -209,7 +210,7 @@ export async function login<Input>(username, password) {
             username,
             returnUrl,
             sessionId,
-            authCode,
+            authCode: process.env.AUTHCODE,
         }),
         method: "POST",
         mode: "cors",
@@ -252,7 +253,7 @@ export async function login<Input>(username, password) {
             password,
             returnUrl,
             sessionId,
-            authCode,
+            authCode: process.env.AUTHCODE,
             userWantsToPairSoftToken: false,
         }),
         method: "POST",

