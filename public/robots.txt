@@ -4,4 +4,10 @@ Allow: /
 User-agent: *
 Allow: /login
 
+User-agent: *
+Allow: /settings
+
+User-agent: *
+Allow: /grades
+
 Sitemap: https://hoogeland.eu.org/sitemap.xml

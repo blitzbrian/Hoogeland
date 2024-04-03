@@ -39,6 +39,21 @@ module.exports = withPWA({
                 permanent: false,
                 destination: "/login",
             },
+            {
+                source: "/grades",
+                missing: [
+                    {
+                        type: "cookie",
+                        key: "userId",
+                    },
+                    {
+                        type: "cookie",
+                        key: "idsrv",
+                    },
+                ],
+                permanent: false,
+                destination: "/login",
+            },
         ];
     },
 });

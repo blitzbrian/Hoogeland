@@ -196,7 +196,7 @@ export async function getDays(
                 subject.Vakken[0]?.Naam == "Lichamelijke opvoeding" ||
                 (location >= 104 && location <= 127) ||
                 (location >= 228 && location <= 258) ||
-                (location >= 71 && location <= 88)
+                (location >= 60 && location <= 68)
             ) {
                 // Break flow 1
                 if (hour === 3 && !minirooster) {
