@@ -6,11 +6,13 @@ import {
     Container,
     Button,
     LoadingOverlay,
+    Anchor,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Login: NextPage = () => {
     let [username, setUsername] = useState("");
@@ -100,6 +102,9 @@ const Login: NextPage = () => {
                         Log In
                     </Button>
                 </Paper>
+                <Container style={{ textAlign: 'center' }}>
+                    <Link href="/example" style={{ color: 'white', marginTop: '20px', display: 'block' }}>Voorbeeld</Link>
+                </Container>
             </Container>
             <LoadingOverlay visible={loading} overlayProps={{ blur: 2 }} />
         </>
