@@ -24,7 +24,7 @@ const Nav: React.FC<Props> = ({ navOpened, setNavOpen }) => {
             position="right"
             closeButtonProps={{
                 icon: (
-                    <Burger opened={navOpened} onClick={() => setNavOpen(false)} transitionTimingFunction="linear"/>
+                    <Burger component="div" opened={navOpened} onClick={() => setNavOpen(false)} transitionTimingFunction="linear" style={{ display: 'flex', alignItems: 'center' }} />
                 ),
             }}
             transitionProps={{ transition: "fade", duration: 300, timingFunction: 'linear' }}

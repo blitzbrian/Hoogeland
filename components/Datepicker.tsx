@@ -63,7 +63,7 @@ const Datepicker: React.FC<Props> = ({ setData }) => {
     };
     return (
         <>
-            <ActionIcon variant="transparent" onClick={open} mr="auto">
+            <ActionIcon aria-label="Select date" variant="transparent" onClick={open} mr="auto">
                 <Calendar size="23px" />
             </ActionIcon>
             <Modal

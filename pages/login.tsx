@@ -103,7 +103,7 @@ const Login: NextPage = () => {
                     </Button>
                 </Paper>
                 <Container style={{ textAlign: 'center' }}>
-                    <Link href="/example" style={{ color: 'white', marginTop: '20px', display: 'block' }}>Voorbeeld</Link>
+                    <Link prefetch={false} href="/example" style={{ color: 'white', marginTop: '20px', display: 'block' }}>Voorbeeld</Link>
                 </Container>
             </Container>
             <LoadingOverlay visible={loading} overlayProps={{ blur: 2 }} />

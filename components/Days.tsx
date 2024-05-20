@@ -16,6 +16,8 @@ const generateLabel = (time: number) => {
         day: "numeric",
     });
 
+    console.log(day);
+
     return day.charAt(0).toUpperCase() + day.slice(1);
 };
 
@@ -33,8 +35,8 @@ const Days: React.FC<Props> = (props) => {
         >
             {props.days?.map((day: any) => (
                 <Accordion.Item
-                    key={day.day}
-                    value={new Date(day.day).toDateString()}
+                    key={new Date(day.day).getTime()}
+                    value={new Date(day.day).getTime().toString()}
                 >
                     <Accordion.Control>
                         {generateLabel(day.day)}

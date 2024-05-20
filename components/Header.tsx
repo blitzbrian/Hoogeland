@@ -26,6 +26,7 @@ const Header: React.FC<Props> = ({
             {Button || <div style={{ marginRight: "auto" }} />}
             <Logo />
             <Burger
+                aria-label="Open / Close"
                 ml="auto"
                 opened={navOpened}
                 onClick={() => (navOpened ? onClose() : setNavOpen(true))}

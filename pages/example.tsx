@@ -2559,7 +2559,7 @@ const Example: NextPage = () => {
                     onClose={() => setOpen(false)}
                     navOpened={opened}
                     Button={
-                        <ActionIcon variant="transparent" mr="auto">
+                        <ActionIcon aria-label="Change date" variant="transparent" mr="auto">
                             <Calendar size="23px" />
                         </ActionIcon>
                     }

@@ -43,6 +43,7 @@ const Settings: NextPage = () => {
                         >
                             Donker Thema:{" "}
                             <Switch
+                                aria-label="Donker Thema"
                                 ml="5px"
                                 checked={colorScheme === "dark"}
                                 onChange={(event) =>

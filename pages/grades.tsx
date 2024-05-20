@@ -51,36 +51,36 @@ const Grades: NextPage<Props> = ({ data }) => {
                 <AppShell.Main>
                     <Nav setNavOpen={setNavOpen} navOpened={navOpened} />
                     {Object.keys(subjects).map((subject: any) => (
-                        <Paper
-                            shadow="xs"
-                            p="xs"
-                            radius={0}
-                            style={{
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                            }}
-                            withBorder
-                            key={subjects[subject].key}
-                        >
-                            <div
+                            <Paper
+                                shadow="xs"
+                                p="xs"
+                                radius={0}
                                 style={{
-                                    height: "40px",
-                                    width: "40px",
-                                    backgroundColor:
-                                        "var(--mantine-color-blue-filled)",
-                                    display: "inline-flex",
-                                    justifyContent: "center",
+                                    cursor: "pointer",
+                                    display: "flex",
                                     alignItems: "center",
-                                    borderRadius: "10px",
-                                    marginRight: "10px",
                                 }}
+                                withBorder
                             >
-                                {subjects[subject].average ||
-                                    subjects[subject].grades[0]}
-                            </div>
-                            {subject}
-                        </Paper>
+                                <div
+                                    style={{
+                                        height: "40px",
+                                        width: "40px",
+                                        backgroundColor:
+                                            "var(--mantine-color-blue-filled)",
+                                        display: "inline-flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        borderRadius: "10px",
+                                        marginRight: "10px",
+                                        color: 'white'
+                                    }}
+                                >
+                                    {subjects[subject].average ||
+                                        subjects[subject].grades[0]}
+                                </div>
+                                {subject}
+                            </Paper>
                     ))}
                 </AppShell.Main>
             </AppShell>
