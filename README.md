@@ -1,6 +1,6 @@
 # Hoogeland
 
-A app specifically made for a school called ISW Hoogeland,
-It's located in South-Holland.
+An app specifically made for a school called Hoogeland
 
-This app uses next and puppeteer to scrape data from Magister and show it in the browser.
+This app is made using Mantine and NextJS.
+I made the implementation of the Magister Api all by myself.
