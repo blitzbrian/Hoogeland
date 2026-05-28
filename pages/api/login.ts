@@ -113,8 +113,6 @@ export async function login<Input>(username, password) {
     const returnUrl = params.get("returnUrl");
     const sessionId = params.get("sessionId");
 
-    // Hardcoded value in the api, it changes sometimes and then the api rejects all requests
-
     res = await fetch(
         "https://accounts.magister.net" + res.headers.get("location"),
         {
@@ -144,6 +142,52 @@ export async function login<Input>(username, password) {
         ...headersToCookie(res.headers),
     };
 
+    let data = await res.text();
+
+    let match = data.match(/js\/account-\w+\.js/);
+
+    if(!match) {
+        return { status: 500, success: false, error: "Could not find authcode." };
+        console.log("Could not find authcode!");
+    }
+
+    const accountJsUrl = `https://accounts.magister.net/${match[0]}`;
+
+
+    res = await fetch(accountJsUrl, {
+        headers: {
+            accept: "*/*",
+            "accept-language": "nl,en;q=0.9,en-GB;q=0.8,en-US;q=0.7",
+            "sec-ch-ua":
+                '"Chromium";v="116", "Not)A;Brand";v="24", "Microsoft Edge";v="116"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-fetch-dest": "script",
+            "sec-fetch-mode": "no-cors",
+            "sec-fetch-site": "same-origin",
+        },
+        referrer: "https://accounts.magister.net/",
+        referrerPolicy: "strict-origin-when-cross-origin",
+        body: null,
+        method: "GET",
+        mode: "cors",
+    });
+
+    data = await res.text();
+
+
+    match = data.match(/\(\w=\["([0-9a-f",]+?)"\],\["([0-9",]+)"\]\.map/);
+    if(!match) {
+        return { status: 500, success: false, error: "Could not find authcode." };
+        console.log("Could not find authcode!");
+    }
+    const codes = match[1].split('","');
+    const indexes = match[2].split('","').map(Number);
+
+    const authCode = indexes.map(i => codes[i]).join("");
+
+
+
     // Get Session
 
     res = await fetch("https://accounts.magister.net/challenges/current", {
@@ -164,7 +208,7 @@ export async function login<Input>(username, password) {
         referrer: "https://accounts.magister.net/",
         referrerPolicy: "origin",
         body: JSON.stringify({
-            authCode: process.env.AUTHCODE,
+            authCode,
             returnUrl,
             sessionId,
         }),
@@ -177,11 +221,11 @@ export async function login<Input>(username, password) {
         ...headersToCookie(res.headers),
     };
 
-    let data = await res.json();
+    data = await res.json();
 
     if (data.error === "AuthCodeValidation") {
-        return { status: 500, success: false, error: "Auth code out of date" };
-        console.log("Auth code out of date!");
+        return { status: 500, success: false, error: "Could not find authcode." };
+        console.log("Auth code error!");
     }
 
     if (data.action !== "username")
@@ -210,7 +254,7 @@ export async function login<Input>(username, password) {
             username,
             returnUrl,
             sessionId,
-            authCode: process.env.AUTHCODE,
+            authCode
         }),
         method: "POST",
         mode: "cors",
@@ -253,7 +297,7 @@ export async function login<Input>(username, password) {
             password,
             returnUrl,
             sessionId,
-            authCode: process.env.AUTHCODE,
+            authCode,
             userWantsToPairSoftToken: false,
         }),
         method: "POST",
